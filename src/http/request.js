@@ -1,3 +1,5 @@
+import { RECEIVE_DATA, REQUEST_DATA } from '../http/api';
+
 var Request = {};
 
 Request.get = function(url, params, successcallback, errorcallback) {
@@ -22,5 +24,23 @@ Request.post = function(url, params, successcallback, errorcallback) {
     .then(json => successcallback(json))
     .catch(error => errorcallback(error))
 }
+
+// new method for async http request
+
+const requestData = (category) => ({
+    type: REQUEST_DATA,
+    category
+})
+
+export const receiveData = (data, category) => ({
+    trpe: RECEIVE_DATA,
+    data,
+    category
+});
+
+// export const fetchData = ({category, params}) => dispatch => {
+//     dispatch(requestData(category))
+//     return allFetch[category](params).then(res => dispatch(receiveData(res, category)));
+// }
 
 export default Request;

@@ -45,13 +45,14 @@ class LoginComp extends Component {
     if (show_indicator === false && indicator !== null) {
       setTimeout(indicator, 0.1);
     }
-    if (req_token.length > 0) {
+    if (req_token !== null && req_token.length > 0) {
       this.props.history.push("/app");
     }
   }
 
   render() {
     const { _username, _password } = this.state;
+    const { getFieldDecorator } = this.props.form;
     return (
       <Form style={styles.containerStyle} onSubmit={this.onSubmitHandle}>
         <Form.Item>
@@ -109,9 +110,7 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-const LoginForm = connect(
+export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(LoginComp);
-
-export default LoginForm;
+)(Form.create()(LoginComp));

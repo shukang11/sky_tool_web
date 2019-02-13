@@ -3,9 +3,11 @@ import React, { Component } from "react";
 import { Layout, Menu, Breadcrumb, Icon } from "antd";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import { bindActionCreators } from 'redux';
+import { bindActionCreators } from "redux";
 
+import { receiveData } from "../http/request";
 import Routes from "../routes";
+import routesConfig from "../routes/config";
 
 const { SubMenu } = Menu;
 const { Header, Sider, Content, Footer } = Layout;
@@ -17,6 +19,8 @@ class HomeComp extends Component {
       collapsed: false
     };
     this.didToggleSider = this.didToggleSider.bind(this);
+    this.renderMenuItem = this.renderMenuItem.bind(this);
+    this.renderSubMenuItem = this.renderSubMenuItem.bind(this);
   }
 
   didToggleSider() {
@@ -25,35 +29,46 @@ class HomeComp extends Component {
     });
   }
 
+  renderMenuItem(item) {
+    return (
+      <Menu.Item key={item.key}>
+        <Link to={item.key}>
+          {item.icon && <Icon type={item.icon} />}
+          <span>{item.title}</span>
+        </Link>
+      </Menu.Item>
+    );
+  }
+
+  renderSubMenuItem(item) {
+    return (
+      <Menu.SubMenu
+        key={item.key}
+        title={
+          <span>
+            {item.icon && <Icon type={item.icon} />}
+            <span className="nav-text">{item.title}</span>
+          </span>
+        }
+      >
+        {item.subs.map(item => this.renderMenuItem(item))}
+      </Menu.SubMenu>
+    );
+  }
+
   render() {
     const { auth } = this.props;
-    
+
     return (
       <Layout style={styles.BodyStyle}>
         <Sider trigger={null} collapsible collapsed={this.state.collapsed}>
           <div style={styles.LogoStyle} />
-          <Menu theme="dark" mode="inline" defaultSelectedKeys={["1"]}>
-            <SubMenu
-              key="sub1"
-              title={
-                <span>
-                  <Icon type="user" />
-                  <span>User</span>
-                </span>
-              }
-            >
-              <Menu.Item key="3">Tom</Menu.Item>
-              <Menu.Item key="4">Bill</Menu.Item>
-              <Menu.Item key="5">Alex</Menu.Item>
-            </SubMenu>
-            <Menu.Item key="2">
-              <Icon type="video-camera" />
-              <span>nav 2</span>
-            </Menu.Item>
-            <Menu.Item key="3">
-              <Icon type="upload" />
-              <span>nav 3</span>
-            </Menu.Item>
+          <Menu theme="dark" mode="inline">
+            {routesConfig["menus"].map(item =>
+              item.subs
+                ? this.renderSubMenuItem(item)
+                : this.renderMenuItem(item)
+            )}
           </Menu>
         </Sider>
         <Layout>
@@ -69,10 +84,11 @@ class HomeComp extends Component {
               margin: "24px 16px",
               padding: 24,
               background: "#fff",
-              minHeight: 280
+              minHeight: 280,
+              overflow: "initial"
             }}
           >
-            <Routes auth={auth}/>
+            <Routes auth={auth} />
           </Content>
         </Layout>
       </Layout>
@@ -106,8 +122,7 @@ const mapStateToProps = state => {
   return { auth, responsive };
 };
 
-const mapDispatchToProps = dispatch => ({
-});
+const mapDispatchToProps = dispatch => ({});
 
 export default connect(
   mapStateToProps,

@@ -7,7 +7,7 @@ import {
 class NotFoundComp  extends Component {
     render() {
         return (
-            <div>Not found</div>
+            <div><Link to="/app">Not found</Link></div>
         );
     }
 }

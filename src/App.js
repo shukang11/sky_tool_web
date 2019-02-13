@@ -3,8 +3,7 @@ import './App.css';
 import {
     Route,
     HashRouter as Router,
-    Switch, 
-    Redirect
+    Switch
 } from 'react-router-dom'
 
 import HomeComp from "./components/home";
@@ -12,7 +11,6 @@ import LoginComp from "./pages/login";
 import NotFoundComp from "./pages/notFound";
 
 import rootReducer from './reducers'
-import TodoList from './components/todoComp'
 
 import {createStore, applyMiddleware} from 'redux'
 import {Provider} from 'react-redux'
@@ -28,7 +26,7 @@ class App extends Component {
     render() {
         return (
             <Provider store={store}>
-                <Router>
+                <Router store={store}>
                 <Switch>
                     <Route path='/login' component={LoginComp}/>
                     <Route path='/404' component={NotFoundComp}/>
