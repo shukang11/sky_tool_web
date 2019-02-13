@@ -39,8 +39,8 @@ class LoginComp extends Component {
     this.props.login(_username, newPassword);
   }
 
-  render() {
-    const { _username, _password, indicator } = this.state;
+  componentWillMount() {
+    const { indicator } = this.state;
     const { show_indicator, req_token } = this.props;
     if (show_indicator === false && indicator !== null) {
       setTimeout(indicator, 0.1);
@@ -48,6 +48,10 @@ class LoginComp extends Component {
     if (req_token.length > 0) {
       this.props.history.push("/app");
     }
+  }
+
+  render() {
+    const { _username, _password } = this.state;
     return (
       <Form style={styles.containerStyle} onSubmit={this.onSubmitHandle}>
         <Form.Item>

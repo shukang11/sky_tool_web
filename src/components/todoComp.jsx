@@ -84,9 +84,7 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-const TodoList = connect(
+export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(TodoComp);
-
-export default TodoList;

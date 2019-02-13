@@ -3,7 +3,8 @@ import './App.css';
 import {
     Route,
     HashRouter as Router,
-    Switch
+    Switch, 
+    Redirect
 } from 'react-router-dom'
 
 import HomeComp from "./components/home";
@@ -32,7 +33,6 @@ class App extends Component {
                     <Route path='/login' component={LoginComp}/>
                     <Route path='/404' component={NotFoundComp}/>
                     <Route path='/app' component={HomeComp}/>
-                    <Route path='/todo' component={TodoList}/>
                 </Switch>
             </Router>
             </Provider>
