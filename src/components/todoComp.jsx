@@ -45,17 +45,27 @@ class TodoComp extends Component {
     
     return (
       <div style={listStyle}>
-        <p>Todo List {visibilityFilter}</p>
         <List
-          itemLayout="horizontal"
+          itemLayout="vertical"
+          size="large"
+          pagination={{
+            position:"bottom",
+            onChange: (page) => {
+              console.log(page)
+            },
+            pageSize: 3
+          }}
+          footer={<div>输入以添加待办</div>}
           dataSource={todos}
           renderItem={item => (
-            <List.Item>
-              <List.Item.Meta title={<a>{item.text}</a>} avatar={<Avatar children={<div>{item.text[0]}</div>}/>}/>
+            <List.Item
+            key={item.text}
+            actions={[]}>
+              <List.Item.Meta title={<a>{item.text}</a>} avatar={<Avatar children={<a>{item.text[0]}</a>}/>}/>
             </List.Item>
           )}
         />
-        <Input placeholder="input new todo" value={input_todo} onChange={this.handleInputChange} />
+        <Input style={{marginTop: "0.5rem"}} placeholder="input new todo" value={input_todo} onChange={this.handleInputChange} />
         <button style={buttonStyle} onClick={this.addHandle}>添加</button>
       </div>
     );

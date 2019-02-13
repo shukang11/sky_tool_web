@@ -12,7 +12,7 @@ Request.post = function(url, params, successcallback, errorcallback) {
     for (var key in params) {
         formData.append(key, params[key])
     }
-    console.log(params, formData);
+    console.warn(params, formData);
     
     const request = fetch(url, {
         method: "post",

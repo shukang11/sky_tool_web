@@ -3,7 +3,8 @@ const PREFIX_PATH = "api/v1000"
 
 const REQUEST_STATE = {
     SUCCESS: "_SUCCESS",
-    FAILURE: "_FAILURE"
+    FAILURE: "_FAILURE",
+    REQUESTING: "_REQUESTING"
 }
 
 export {

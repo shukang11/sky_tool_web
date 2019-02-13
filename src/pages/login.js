@@ -1,8 +1,7 @@
 /** Created by treee at 2019/1/29 11:42 AM */
 
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
-import { Form, Input, Icon, Button, Checkbox } from "antd";
+import { Form, Input, Icon, Button, Checkbox, message } from "antd";
 import { connect } from "react-redux";
 import { UserLogin } from "../reducers/user";
 import md5 from 'md5';
@@ -12,28 +11,43 @@ class LoginComp extends Component {
     super(props);
     this.state = {
       _username: "",
-      _password: ""
+      _password: "",
+      indicator: null
     };
     this.onSubmitHandle = this.onSubmitHandle.bind(this);
   }
 
   onSubmitHandle() {
-    const { _username, _password } = this.state;
+    const { _username, _password, _isLoading } = this.state;
+    if (_isLoading === true) {
+      message.warning("请稍后重试");
+      return;
+    }
+    if (_username.length === 0) {
+      message.warning("请输入账号", 1)
+      return
+    }
+    if (_password.length === 0) {
+      message.warning("请输入密码", 1)
+      return
+    }
+    const indicator = message.loading("登录中，请稍后...")
+    this.setState({
+      indicator: indicator
+    });
     const newPassword = md5(_password);
     this.props.login(_username, newPassword);
   }
 
-  componentWillUpdate() {
-    const { req_token } = this.props;
-    if (req_token.length > 0) {
-      this.props.history.push('/todo');
-      return false;
-    }
-    return true;
-  }
-
   render() {
-    const { _username, _password } = this.state;
+    const { _username, _password, indicator } = this.state;
+    const { show_indicator, req_token } = this.props;
+    if (show_indicator === false && indicator !== null) {
+      setTimeout(indicator, 0.1);
+    }
+    if (req_token.length > 0) {
+      this.props.history.push("/app");
+    }
     return (
       <Form style={styles.containerStyle} onSubmit={this.onSubmitHandle}>
         <Form.Item>
