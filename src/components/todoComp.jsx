@@ -33,8 +33,8 @@ class TodoComp extends Component {
     const { todos, visibilityFilter } = this.props;
     const { input_todo } = this.state;
 
-    var listStyle = {
-      margin: '2rem'
+    var containerStyle = {
+      margin: '0.2rem',
     }
 
     const buttonStyle = {
@@ -42,10 +42,17 @@ class TodoComp extends Component {
       float: 'right',
       marginTop: '0.5rem'
     }
+
+    const listStyle = {
+      marginTop: '3rem'
+    }
     
     return (
-      <div style={listStyle}>
+      <div style={containerStyle}>
+        <Input style={{marginTop: "0.5rem"}} placeholder="input new todo" value={input_todo} onChange={this.handleInputChange} />
+        <button style={buttonStyle} onClick={this.addHandle}>添加</button>
         <List
+        style={listStyle}
           itemLayout="vertical"
           size="large"
           pagination={{
@@ -53,7 +60,7 @@ class TodoComp extends Component {
             onChange: (page) => {
               console.log(page)
             },
-            pageSize: 3
+            pageSize: 10
           }}
           footer={<div>输入以添加待办</div>}
           dataSource={todos}
@@ -65,8 +72,6 @@ class TodoComp extends Component {
             </List.Item>
           )}
         />
-        <Input style={{marginTop: "0.5rem"}} placeholder="input new todo" value={input_todo} onChange={this.handleInputChange} />
-        <button style={buttonStyle} onClick={this.addHandle}>添加</button>
       </div>
     );
   }

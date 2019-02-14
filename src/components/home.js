@@ -3,14 +3,11 @@ import React, { Component } from "react";
 import { Layout, Menu, Breadcrumb, Icon } from "antd";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
 import { Route } from "react-router";
 
 import allComponents from "../components/index";
-import { receiveData } from "../http/request";
 import routesConfig from "../routes/config";
 
-const { SubMenu } = Menu;
 const { Header, Sider, Content, Footer } = Layout;
 
 class HomeComp extends Component {
@@ -113,6 +110,9 @@ class HomeComp extends Component {
                 : this.renderRouteItem(item)
             )}
           </Content>
+          <Footer style={styles.FooterStyle}>
+          sky tool @2019 Created by tree_
+          </Footer>
         </Layout>
       </Layout>
     );
@@ -136,6 +136,9 @@ const styles = {
     height: "2rem",
     background: "rgba(255, 255, 255, .2)",
     margin: "1rem"
+  },
+  FooterStyle: {
+    textAlign: "center"
   }
 };
 
