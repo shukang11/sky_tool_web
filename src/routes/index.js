@@ -14,6 +14,8 @@ class CRouter extends Component {
                             
                             const route = r => {
                                 const Comp = AllComponents[r.component]
+                                console.log(r.key);
+                                
                                 return (
                                     <Route 
                                     key={r.key }

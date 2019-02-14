@@ -4,9 +4,10 @@ import { Layout, Menu, Breadcrumb, Icon } from "antd";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import { Route } from "react-router";
 
+import allComponents from "../components/index";
 import { receiveData } from "../http/request";
-import Routes from "../routes";
 import routesConfig from "../routes/config";
 
 const { SubMenu } = Menu;
@@ -21,12 +22,29 @@ class HomeComp extends Component {
     this.didToggleSider = this.didToggleSider.bind(this);
     this.renderMenuItem = this.renderMenuItem.bind(this);
     this.renderSubMenuItem = this.renderSubMenuItem.bind(this);
+    this.renderRouteItem = this.renderRouteItem.bind(this);
+    this.renderSubRouteItem = this.renderSubRouteItem.bind(this);
   }
 
   didToggleSider() {
     this.setState({
       collapsed: !this.state.collapsed
     });
+  }
+
+  renderRouteItem(item) {
+    return (
+      <Route
+        key={item.key}
+        exact
+        path={item.key}
+        component={allComponents[item.component]}
+      />
+    );
+  }
+
+  renderSubRouteItem(item) {
+    return item.subs.map(r => this.renderRouteItem(r));
   }
 
   renderMenuItem(item) {
@@ -88,7 +106,12 @@ class HomeComp extends Component {
               overflow: "initial"
             }}
           >
-            <Routes auth={auth} />
+            {/* <Route exact path='/app/tool/todo' component={TodoComp} /> */}
+            {routesConfig["menus"].map(item =>
+              item.subs
+                ? this.renderSubRouteItem(item)
+                : this.renderRouteItem(item)
+            )}
           </Content>
         </Layout>
       </Layout>

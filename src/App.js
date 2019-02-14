@@ -3,6 +3,7 @@ import './App.css';
 import {
     Route,
     HashRouter as Router,
+    Redirect,
     Switch
 } from 'react-router-dom'
 
@@ -28,6 +29,7 @@ class App extends Component {
             <Provider store={store}>
                 <Router store={store}>
                 <Switch>
+                    <Route exact path='/' render={() => <Redirect to='/app' push />} />
                     <Route path='/login' component={LoginComp}/>
                     <Route path='/404' component={NotFoundComp}/>
                     <Route path='/app' component={HomeComp}/>
