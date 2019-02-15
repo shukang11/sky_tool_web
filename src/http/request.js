@@ -10,12 +10,12 @@ Request.get = function(url, params, successcallback, errorcallback) {
 }
 
 Request.post = function(url, params, successcallback, errorcallback) {
-    let formData = new FormData();
+    var formData = new FormData();
     for (var key in params) {
         formData.append(key, params[key])
     }
-    console.warn(params, formData);
-    
+    const token = localStorage.getItem('req_token')
+    formData.append('token', token ? token : '')
     const request = fetch(url, {
         method: "post",
         body: formData
