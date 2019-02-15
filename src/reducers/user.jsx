@@ -1,31 +1,29 @@
 import { HOST, PREFIX_PATH, REQUEST_STATE } from "../http/api";
 import Request from "../http/request";
+import {appActions} from "./app";
+
+
 const LOGIN = "LOGIN";
 
 const defaultState = {
   req_token: localStorage.getItem("req_token"),
-  show_indicator: false
 };
 
 export function UserLogin(username, password) {
   const url = `${HOST}${PREFIX_PATH}/user/login`;
   return dispatch => {
-    dispatch({
-      type: LOGIN+REQUEST_STATE.REQUESTING,
-      req_token: "",
-      show_indicator: true
-    })
+    dispatch(appActions.startFetch)
     Request.post(
       url,
       { email: username, password: password },
       json => {
+        dispatch(appActions.finishFetch)
         const req_token = json["token"];
         if (req_token === null || req_token === "") {
           localStorage.removeItem("req_token");
           dispatch({
             type: LOGIN + REQUEST_STATE.FAILURE,
             req_token: "",
-            show_indicator: false
           });
           return;
         }
@@ -33,14 +31,13 @@ export function UserLogin(username, password) {
         dispatch({
           type: LOGIN + REQUEST_STATE.SUCCESS,
           req_token: localStorage.getItem("req_token"),
-          show_indicator: false
         });
       },
       error => {
+        dispatch(appActions.setError(error))
         dispatch({
           type: LOGIN + REQUEST_STATE.FAILURE,
           req_token: "",
-          show_indicator: false
         });
       }
     );

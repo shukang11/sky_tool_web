@@ -41,8 +41,8 @@ class LoginComp extends Component {
 
   componentWillMount() {
     const { indicator } = this.state;
-    const { show_indicator, req_token } = this.props;
-    if (show_indicator === false && indicator !== null) {
+    const { isFetching, req_token } = this.props;
+    if (isFetching === false && indicator !== null) {
       setTimeout(indicator, 0.1);
     }
     if (req_token !== null && req_token.length > 0) {
@@ -99,9 +99,8 @@ const styles = {
 };
 
 const mapStateToProps = state => {
-  console.log(state.user);
   
-  return state.user;
+  return {...state.user, isFetching: state.app.isFetching};
 };
 
 const mapDispatchToProps = dispatch => {
