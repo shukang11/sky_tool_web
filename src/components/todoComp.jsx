@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { toggle_action, add_action, setVisibility } from "../reducers/todo";
+import { setVisibility } from "../reducers/todo";
 import { List, Avatar, Input } from "antd";
 
-import { requestTodos } from "../reducers/todo";
+import { requestTodos, requestAddTodo } from "../reducers/todo";
 import { bindActionCreators } from "../../../../../../Library/Caches/typescript/3.3/node_modules/redux";
 class TodoComp extends Component {
   constructor(props) {
@@ -21,7 +21,7 @@ class TodoComp extends Component {
       input_todo: ""
     });
     if (value) {
-      this.props.add(value);
+      this.props.requestAddTodo(value);
     }
   }
 
@@ -90,10 +90,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    add: text => dispatch(add_action(text)),
-    toggle: id => dispatch(toggle_action(id)),
     setVisibility: filter => dispatch(setVisibility(filter)),
-    requestTodos: bindActionCreators(requestTodos, dispatch)
+    requestTodos: bindActionCreators(requestTodos, dispatch),
+    requestAddTodo: bindActionCreators(requestAddTodo, dispatch)
   };
 };
 

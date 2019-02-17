@@ -110,9 +110,6 @@ class HomeComp extends Component {
                 : this.renderRouteItem(item)
             )}
           </Content>
-          <Footer style={styles.FooterStyle}>
-          sky tool @2019 Created by tree_
-          </Footer>
         </Layout>
       </Layout>
     );
