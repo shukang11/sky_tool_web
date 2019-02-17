@@ -74,9 +74,24 @@ const addHandle = handleAction(
   defaultState
 );
 
+const filterHandle = handleAction(
+	SET_VISIBILITY_FILTER,
+	(state, action) => {
+		return {
+		...state,
+		todos: [
+			...state.todos,
+		],
+		visibilityFilter: action.payload.filter
+		}
+  },
+  defaultState
+)
+
 const reducers = handleActions(
   {
-    [add_action]: addHandle
+	[add_action]: addHandle,
+	[setVisibility]: filterHandle
   },
   defaultState
 );
