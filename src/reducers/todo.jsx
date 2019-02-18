@@ -21,7 +21,7 @@ const defaultState = {
 // action creator
 
 export const add_action = createAction(ADD_TODO, todo => ({ todo: todo }));
-export const toggle_action = createAction(TOGGLE_TODO, id => ({ id: id }));
+export const toggle_action = createAction(TOGGLE_TODO, todo => ({ todo: todo }));
 export const setVisibility = createAction(SET_VISIBILITY_FILTER, filter => ({
   filter: filter
 }));
@@ -42,6 +42,36 @@ export const requestTodos = ({ filter }) => dispatch => {
   );
 };
 
+export const requestFinishTodo = (id) => dispatch => {
+  const url = `${HOST}${PREFIX_PATH}/todo/finish`;
+  const params = {todo_id: id};
+  Request.post(
+    url,
+    params,
+    r => {
+      dispatch(toggle_action(r))
+    },
+    e => {
+      console.log(e);
+    }
+  );
+}
+
+export const requestUndoTodo = (id) => dispatch => {
+  const url = `${HOST}${PREFIX_PATH}/todo/undo`;
+  const params = {todo_id: id};
+  Request.post(
+    url,
+    params,
+    r => {
+      dispatch(toggle_action(r))
+    },
+    e => {
+      console.log(e);
+    }
+  );
+}
+
 export const requestAddTodo = (text) => dispatch => {
   const url = `${HOST}${PREFIX_PATH}/todo/add`;
   const params = { title: text };
@@ -51,7 +81,9 @@ export const requestAddTodo = (text) => dispatch => {
     r => {
       dispatch(add_action({"todo_id": r.todo_id, "todo_title": text, "todo_state": 1}))
     },
-    null
+    e => {
+      console.log(e);
+    }
   );
 };
 // action handler
@@ -74,6 +106,23 @@ const addHandle = handleAction(
   defaultState
 );
 
+const ToggleHandle = handleAction(
+  TOGGLE_TODO,
+  (state, action) => {
+    return {
+      ...state,
+      todos: state.todos.map(t => {
+        if (t.id === action.payload.todo.todo_id) {
+          console.log(action.payload.todo.todo_state);
+          t.state = action.payload.todo.todo_state;
+        }
+        return t
+      })
+    };
+  },
+  defaultState
+);
+
 const filterHandle = handleAction(
 	SET_VISIBILITY_FILTER,
 	(state, action) => {
@@ -90,7 +139,8 @@ const filterHandle = handleAction(
 
 const reducers = handleActions(
   {
-	[add_action]: addHandle,
+  [add_action]: addHandle,
+  [toggle_action]: ToggleHandle,
 	[setVisibility]: filterHandle
   },
   defaultState
