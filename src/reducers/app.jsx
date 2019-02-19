@@ -1,8 +1,12 @@
+import { createAction } from "redux-actions";
+
 export const types = {
   START_FETCH: "app/START_FETCH",
   FINISH_FETCH: "app/FINISH_FETCH",
   SET_ERROR: "app/SET_ERROR"
 };
+
+const TOGGLE_MENU_COLLAPSED = "ToggleMenuCollapsed";
 
 export const appActions = {
   startFetch: () => {
@@ -16,9 +20,13 @@ export const appActions = {
   }
 };
 
+export const ToggleMenuCollapsed = () => ({ type: TOGGLE_MENU_COLLAPSED });
+
+// default state
 export const initialState = {
   isFetching: false,
-  error: null
+  error: null,
+  isMenuCollapsed: false
 };
 
 function reducers(state = initialState, action) {
@@ -29,8 +37,10 @@ function reducers(state = initialState, action) {
       return { ...state, isFetching: false };
     case types.SET_ERROR:
       return { ...state, error: action.payload };
-      default:
-      return state
+    case TOGGLE_MENU_COLLAPSED:
+      return { ...state, isMenuCollapsed: !state.isMenuCollapsed };
+    default:
+      return state;
   }
 }
 

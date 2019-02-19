@@ -7,6 +7,7 @@ import { Route } from "react-router";
 
 import allComponents from "../components/index";
 import routesConfig from "../routes/config";
+import CustomHeader from "./HeaderCustom";
 
 const { Header, Sider, Content, Footer } = Layout;
 
@@ -14,19 +15,17 @@ class HomeComp extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      collapsed: false
     };
-    this.didToggleSider = this.didToggleSider.bind(this);
     this.renderMenuItem = this.renderMenuItem.bind(this);
     this.renderSubMenuItem = this.renderSubMenuItem.bind(this);
     this.renderRouteItem = this.renderRouteItem.bind(this);
     this.renderSubRouteItem = this.renderSubRouteItem.bind(this);
+    this.didClickedUser = this.didClickedUser.bind(this);
   }
 
-  didToggleSider() {
-    this.setState({
-      collapsed: !this.state.collapsed
-    });
+
+  didClickedUser() {
+
   }
 
   renderRouteItem(item) {
@@ -72,11 +71,11 @@ class HomeComp extends Component {
   }
 
   render() {
-    const { auth } = this.props;
+    const { auth, isMenuCollapsed } = this.props;
 
     return (
       <Layout style={styles.BodyStyle}>
-        <Sider trigger={null} collapsible collapsed={this.state.collapsed}>
+        <Sider trigger={null} collapsible collapsed={isMenuCollapsed}>
           <div style={styles.LogoStyle} />
           <Menu theme="dark" mode="inline">
             {routesConfig["menus"].map(item =>
@@ -87,17 +86,9 @@ class HomeComp extends Component {
           </Menu>
         </Sider>
         <Layout>
-          <Header style={{ background: "#fff", padding: 0 }}>
-            <Icon
-              style={styles.TriggerStyle}
-              type={this.state.collapsed ? "menu-unfold" : "menu-fold"}
-              onClick={this.didToggleSider}
-            />
-          </Header>
+          <CustomHeader></CustomHeader>
           <Content
             style={{
-              // margin: "24px 16px",
-              // padding: 24,
               background: "#fff",
               height: "100%",
               overflow: "initial"
@@ -129,6 +120,12 @@ const styles = {
     cursor: "pointer",
     transition: "color .3s"
   },
+  UserIconStyle: {
+    marginRight: "1.3rem",
+    lineHeight: "3rem",
+    padding: "0 1rem",
+    cursor: "pointer",
+  },
   LogoStyle: {
     height: "2rem",
     background: "rgba(255, 255, 255, .2)",
@@ -142,7 +139,8 @@ const styles = {
 const mapStateToProps = state => {
   const auth = { data: {} },
     responsive = { data: {} };
-  return { auth, responsive };
+    const {isMenuCollapsed} = state.app;
+  return { auth, responsive, isMenuCollapsed };
 };
 
 const mapDispatchToProps = dispatch => ({});
