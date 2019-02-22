@@ -32,6 +32,7 @@ export const requestTodos = ({ filter }) => dispatch => {
     url,
     {},
     r => {
+      if (!r) { return; }
       for (const todo in r) {
         dispatch(add_action(r[todo]));
       }

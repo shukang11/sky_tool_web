@@ -27,8 +27,8 @@ class CustomHeader extends Component {
           onClick={this.didToggleSider}
         />
         <div style={styles.rightMarginStyle}>
-          <Icon style={styles.IconStyle} type={"user"} />
-          <Icon style={styles.IconStyle} type={"logout"} />
+          <p style={styles.userIconStyle}><a>用户</a></p>
+          <p style={styles.userIconStyle}><a>注销</a></p>
         </div>
       </div>
     );
@@ -37,11 +37,11 @@ class CustomHeader extends Component {
 
 const styles = {
   ContainerStyle: {
-    lineHeight: "rem"
+    lineHeight: "2rem"
   },
   IconStyle: {
-    fontSize: "2rem",
-    lineHeight: "3rem",
+    fontSize: "1.3rem",
+    lineHeight: "2rem",
     padding: "0 0.3rem",
     cursor: "pointer"
   },
@@ -51,6 +51,13 @@ const styles = {
   rightMarginStyle: {
     marginRight: "1rem",
     float: "right"
+  },
+  userIconStyle: {
+    fontSize: "0.7rem",
+    lineHeight: "2rem",
+    padding: "0 0.2rem",
+    cursor: "pointer",
+    float: "left"
   }
 };
 

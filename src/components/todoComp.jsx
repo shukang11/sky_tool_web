@@ -51,7 +51,7 @@ class TodoComp extends Component {
   render() {
     const { todos } = this.props;
     const { input_todo } = this.state;
-
+    
     const f_todos = todos.map(t => {
       var pref = ""
       var displayComp = null

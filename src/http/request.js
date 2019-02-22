@@ -24,8 +24,20 @@ Request.post = function(url, params, successcallback, errorcallback) {
   });
   request
     .then(resp => resp.json())
-    .then(json => successcallback(json))
-    .catch(error => errorcallback(error));
+    .then(json => {
+      console.log(json);
+      const code = json.code;
+      const msg = json.msg;
+      const info = json.request;
+      if (code <= 30000) {
+        successcallback(json)
+      } else if (code === 40204) { // token 过期
+        errorcallback(code)
+      }
+    })
+    .catch(error => {
+      errorcallback(error)
+    });
 };
 
 // new method for async http request
