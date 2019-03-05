@@ -26,7 +26,7 @@ Request.post = function(url, params, successcallback, errorcallback) {
     .then(resp => resp.json())
     .then(json => {
       console.log(json);
-      const code = json.code;
+      const code = json.code || 200;
       const msg = json.msg;
       const info = json.request;
       if (code <= 30000) {

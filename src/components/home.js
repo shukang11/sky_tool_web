@@ -1,6 +1,6 @@
 /** Created by treee at 2018/8/7 下午2:31 */
 import React, { Component } from "react";
-import { Layout, Menu, Breadcrumb, Icon } from "antd";
+import { Layout, Menu, Icon } from "antd";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { Route } from "react-router";
@@ -9,7 +9,7 @@ import allComponents from "../components/index";
 import routesConfig from "../routes/config";
 import CustomHeader from "./HeaderCustom";
 
-const { Header, Sider, Content, Footer } = Layout;
+const { Sider, Content } = Layout;
 
 class HomeComp extends Component {
   constructor(props) {
