@@ -1,5 +1,5 @@
 const HOST = "http://0.0.0.0:8091/";
-const PREFIX_PATH = "api/v1000"
+const PREFIX_PATH = "api"
 
 const REQUEST_STATE = {
     SUCCESS: "_SUCCESS",
