@@ -35,10 +35,6 @@ export function UserLogin(username, password) {
       },
       error => {
         dispatch(appActions.setError(error))
-        dispatch({
-          type: LOGIN + REQUEST_STATE.FAILURE,
-          req_token: "",
-        });
       }
     );
   };

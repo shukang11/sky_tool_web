@@ -39,20 +39,24 @@ class LoginComp extends Component {
     this.props.login(_username, newPassword);
   }
 
-  componentWillMount() {
+  componentWillReceiveProps(nextProps) {
+    const {error, isFetching, isLogin} = nextProps;
     const { indicator } = this.state;
-    const { isFetching, req_token } = this.props;
-    if (isFetching === false && indicator !== null) {
+    if (isFetching === false) {
       setTimeout(indicator, 0.1);
     }
-    if (req_token !== null && req_token.length > 0) {
-      this.props.history.push("/app");
+    if (error) {
+      if (error.code === 40203) {
+        message.warning('用户不存在');
+      }
+    } else if (isLogin === true) {
+      nextProps.history.push('/app');
     }
   }
 
   render() {
     const { _username, _password } = this.state;
-    const { getFieldDecorator } = this.props.form;
+    
     return (
       <Form style={styles.containerStyle} onSubmit={this.onSubmitHandle}>
         <Form.Item>
@@ -100,7 +104,11 @@ const styles = {
 
 const mapStateToProps = state => {
   
-  return {...state.user, isFetching: state.app.isFetching};
+  return {...state.user, 
+    isFetching: state.app.isFetching, 
+    error: state.app.error,
+    isLogin: state.user.req_token !== null
+  };
 };
 
 const mapDispatchToProps = dispatch => {
