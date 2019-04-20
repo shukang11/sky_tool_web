@@ -25,14 +25,17 @@ Request.post = function(url, params, successcallback, errorcallback) {
   request
     .then(resp => resp.json())
     .then(json => {
-      console.log(json);
       const code = json.code || 200;
       const msg = json.msg;
       const info = json.request;
       if (code <= 30000) {
+        errorcallback(null)
         successcallback(json)
-      } else if (code === 40204) { // token 过期
-        errorcallback(code)
+      } else {
+        if (code === 40204 || code === 40203) { // token 过期
+          localStorage.removeItem('req_token');
+        }
+        errorcallback(json)
       }
     })
     .catch(error => {
