@@ -15,8 +15,9 @@ export const request_Rss = () => dispatch => {
     Request.post(url, {}, 
         r => {
             if (!r) { return; }
-            for (const i in r) {
-                dispatch(add_action({"link": r[i].rss_link, "rss_id": r[i].rss_id}))
+            var list = r.list;
+            for (const i in list) {
+                dispatch(add_action({"link": list[i].link, "rss_id": list[i].id}))
             }
     }, e => {
         console.log(e);

@@ -71,7 +71,7 @@ class HomeComp extends Component {
   }
 
   render() {
-    const { auth, isMenuCollapsed } = this.props;
+    const { isMenuCollapsed } = this.props;
 
     return (
       <Layout style={styles.BodyStyle}>

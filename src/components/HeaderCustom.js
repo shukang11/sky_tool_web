@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import { Layout, Menu, Breadcrumb, Icon } from "antd";
-import { Link } from "react-router-dom";
+import { Icon } from "antd";
+// import { Link } from "react-router-dom";
+// import { Route } from "react-router";
 import { connect } from "react-redux";
-import { Route } from "react-router";
 import { bindActionCreators } from "redux";
 
 import { ToggleMenuCollapsed } from "../reducers/app";
