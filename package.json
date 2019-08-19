@@ -3,16 +3,23 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@types/md5": "^2.1.33",
     "@types/react-redux": "^7.1.1",
     "@types/react-router": "^5.0.3",
     "@types/react-router-dom": "^4.3.4",
     "@types/redux": "^3.6.0",
     "@types/redux-actions": "^2.6.1",
+    "@types/redux-logger": "^3.0.7",
     "@types/redux-thunk": "^2.1.0",
     "antd": "^3.21.4",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
+    "react-redux": "^7.1.0",
+    "react-router-dom": "^5.0.1",
     "react-scripts-ts": "3.1.0",
+    "redux": "^4.0.4",
+    "redux-actions": "^2.6.5",
+    "redux-logger": "^3.0.6",
     "umi-request": "^1.2.2"
   },
   "scripts": {
@@ -26,5 +33,6 @@
     "@types/node": "^12.7.2",
     "@types/react-dom": "^16.8.5",
     "typescript": "^3.5.3"
-  }
+  },
+  "proxy": "http://192.168.0.109:5000"
 }

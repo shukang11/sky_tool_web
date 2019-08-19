@@ -1,0 +1,21 @@
+.container {
+  margin-top: 2rem;
+}
+
+.input-item {
+  height: 2.5rem;
+  max-width: 18rem;
+  margin: 0 auto;
+  margin-top: 1rem;
+  display: block;
+}
+
+.input-item-button-login {
+  float: right;
+  width: 4rem;
+}
+
+.input-item-button-register {
+  float: left;
+  width: 4rem;
+}
