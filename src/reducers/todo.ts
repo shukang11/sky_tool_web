@@ -11,87 +11,40 @@ export const FILTER = {
 };
 
 // action creator
-interface ITodo {
+interface ITodoModel {
   id: number;
   text: string;
   state: any;
 }
 
-const defaultState = {
+interface ITodo {
+  todos: Array<ITodoModel>;
+  visibilityFilter: string;
+}
+
+const defaultState: ITodo = {
   todos: [],
   visibilityFilter: FILTER.SHOW_ALL
 };
 
-export const add_action = createAction(ADD_TODO, (todo: ITodo) => ({
-  todo: todo
-}));
-export const toggle_action = createAction(TOGGLE_TODO, (todo: ITodo) => ({
-  todo: todo
-}));
-export const setVisibility = createAction(
+export const set_visibility_filter_action = createAction<ITodo, string>(
   SET_VISIBILITY_FILTER,
-  (filter: string) => ({
-    filter: filter
+  filter => ({
+    visibilityFilter: filter,
+    todos: []
   })
 );
 
 // action handler
-const addHandle = handleAction(
-  ADD_TODO,
-  (state, action) => {
-    var todo: ITodo = (action.payload as { [key: string]: any })["todo"];
-    return {
-      ...state,
-      todos: [
-        ...state.todos,
-        {
-          id: todo.id,
-          text: todo.text,
-          state: todo.state
-        }
-      ]
-    };
-  },
-  defaultState
-);
-
-const ToggleHandle = handleAction(
-  TOGGLE_TODO,
-  (state, action) => {
-    var todo: ITodo = (action.payload as { [key: string]: any })["todo"];
-    return {
-      ...state,
-      todos: state.todos.map(t => {
-        if (t.id === todo.id) {
-          t.state = todo.state;
-        }
-        return t;
-      })
-    };
-  },
-  defaultState
-);
-
-const filterHandle = handleAction(
-  SET_VISIBILITY_FILTER,
-  (state, action) => {
-    var filter: string = (action.payload as { [key: string]: string })[
-      "filter"
-    ];
-    return {
-      ...state,
-      todos: [...state.todos],
-      visibilityFilter: filter
-    };
-  },
-  defaultState
-);
-
-const reducers = handleActions(
+const reducers = handleActions<ITodo>(
   {
-    add_action: addHandle,
-    toggle_action: ToggleHandle,
-    setVisibility: filterHandle
+    [TOGGLE_TODO]: (state, action) => {
+      var newState: ITodo = {
+        todos: state.todos,
+        visibilityFilter: action.payload.visibilityFilter
+      };
+      return newState;
+    }
   },
   defaultState
 );

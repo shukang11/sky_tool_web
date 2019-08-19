@@ -13,7 +13,7 @@ import thunk from "redux-thunk";
 import logger from "redux-logger";
 
 import LoginComp from "./pages/login/login";
-import HomeComp from './components/home';
+import HomeComp from './components/Home/home';
 
 const store = createStore(rootReducers, applyMiddleware(thunk, logger));
 class App extends React.Component {
