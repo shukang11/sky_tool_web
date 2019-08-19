@@ -1,10 +1,16 @@
 import * as React from "react";
 import { Button, Input, message } from "antd";
+import { connect } from "react-redux";
+import {bindActionCreators, Dispatch} from 'redux';
 import "./login.css";
+import * as H from "history";
+import { login, register } from "./../../services/user";
+import { setTokenAction } from "../../reducers/user";
 
-import {login, register} from './../../services/user';
-
-interface ILoginProps {}
+interface ILoginProps {
+  history: H.History;
+  setTokenAction: Function;
+}
 
 interface ILoginState {
   name: string;
@@ -25,41 +31,41 @@ class LoginComp extends React.Component<ILoginProps, ILoginState> {
   onLoginClicked() {
     const { name, password } = this.state;
     if (name.length === 0) {
-      message.warning('请输入正确的名称');
+      message.warning("请输入正确的名称");
       return;
     }
-    if (password.length < 6 || password.length >  18) {
-      message.warning('请输入6-18位密码');
+    if (password.length < 6 || password.length > 18) {
+      message.warning("请输入6-18位密码");
       return;
     }
-
-    login(name, password).then(resp => {
-      console.log(JSON.stringify(resp));
-    }).catch(error => {
-        console.log(JSON.stringify(error));
+    login(name, password).then(r => {
+      this.props.setTokenAction(r.token);
+      this.props.history.push("/app");
+      return;
     });
   }
 
   onRegisterClicked() {
     const { name, password } = this.state;
     if (name.length === 0) {
-      message.warning('请输入正确的名称');
+      message.warning("请输入正确的名称");
       return;
     }
-    if (password.length < 6 || password.length >  18) {
-      message.warning('请输入6-18位密码');
+    if (password.length < 6 || password.length > 18) {
+      message.warning("请输入6-18位密码");
       return;
     }
     register(name, password).then(r => {
-      console.log(r);
-    }).catch(e => {
-      console.log(e);
+      if (r.id) {
+        this.onLoginClicked();
+      }
     });
   }
+
   render() {
     const { name, password } = this.state;
     return (
-      <div className='container'>
+      <div className="container">
         <Input
           className="input-item"
           placeholder="请输入用户名"
@@ -103,4 +109,15 @@ class LoginComp extends React.Component<ILoginProps, ILoginState> {
   }
 }
 
-export default LoginComp;
+const mapStateToProps = (state: { user: any }) => {
+  return { ...state.user };
+};
+
+const mapDispatchToProps = dispatch => ({
+  setTokenAction: (token: string) => dispatch(setTokenAction(token))
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(LoginComp);

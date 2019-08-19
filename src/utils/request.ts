@@ -19,19 +19,27 @@ const codeMessage = {
   504: "网关超时。"
 };
 
+const errorMessage = {
+  40203: "无此账号",
+};
+
 /**
  * 异常处理程序
  */
-const errorHandler = (error: { response: Response }): Response => {
-  const { response } = error;
+const errorHandler = (error: { response: Response, data: {[key: string]: any} }): Response => {
+  const { response, data } = error;
   if (response && response.status) {
-    const errorText = codeMessage[response.status] || response.statusText;
+    var errorText = codeMessage[response.status] || response.statusText;
     const { status, url } = response;
-
-    notification.error({
-      message: `请求错误 ${status}: ${url}`,
-      description: errorText
-    });
+    if (data.code >= 40000 && data.code <= 50000) {
+      errorText = errorMessage[data.code];
+    }
+      notification.error({
+        message: `请求错误 ${status}: ${url}`,
+        description: errorText
+      });
+    
+    
   }
   return response;
 };
