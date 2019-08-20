@@ -1,12 +1,12 @@
 import * as React from "react";
-import { Layout, Menu, Icon } from "antd";
-import { Link } from "react-router-dom";
+import { Layout } from "antd";
 import { Route } from "react-router";
 
 import allComponents from "../index";
 import routesConfig from "../../routes/config";
 
-import HomeSiderComp from './HomeSider';
+import HomeSiderComp from "./HomeSider";
+import HomeHeaderComp from "./HomeHeader";
 const { Content } = Layout;
 import { IMenuItem, IMenuModel } from "./../../routes/config";
 
@@ -41,16 +41,17 @@ class HomeComp extends React.Component<IHomeProps, IHomeState> {
 
     return (
       <Layout style={styles.BodyStyle}>
-        <HomeSiderComp isMenuCollapsed={isMenuCollapsed}></HomeSiderComp>
+        <HomeSiderComp isMenuCollapsed={isMenuCollapsed} />
         <Layout>
+          <HomeHeaderComp />
           <Content
             style={{
               background: "#fff",
               height: "100%",
-              overflow: "initial"
+              overflow: "initial",
+              padding: "1rem"
             }}
           >
-            {/* <Route exact path='/app/tool/todo' component={TodoComp} /> */}
             {routesConfig.map(item =>
               item.subs
                 ? this.renderSubRouteItem(item)

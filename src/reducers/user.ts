@@ -1,8 +1,6 @@
 import { createAction, handleAction, handleActions } from "redux-actions";
 import { string } from "prop-types";
 
-const LOGIN = "LOGIN";
-
 const SET_TOKEN = "SET_TOKEN";
 
 interface IUSERState {
@@ -19,10 +17,15 @@ export const setTokenAction = createAction<IUSERState, string>(
 
 const reducers = handleActions(
   {
-    [SET_TOKEN]: (state, action) => ({
-      ...state,
-      token: action.payload.token
-    })
+    [SET_TOKEN]: (state, action) => {
+      // set cookie
+      var { token } = action.payload;
+      localStorage.setItem('token', token);
+      return {
+        ...state,
+        token: token
+      }
+    }
   },
   defaultState
 );

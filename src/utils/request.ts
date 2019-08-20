@@ -26,7 +26,7 @@ const errorMessage = {
 /**
  * 异常处理程序
  */
-const errorHandler = (error: { response: Response, data: {[key: string]: any} }): Response => {
+const errorHandler = (error: { response: Response, data: {[key: string]: any} }): object => {
   const { response, data } = error;
   if (response && response.status) {
     var errorText = codeMessage[response.status] || response.statusText;
@@ -35,13 +35,11 @@ const errorHandler = (error: { response: Response, data: {[key: string]: any} })
       errorText = errorMessage[data.code];
     }
       notification.error({
-        message: `请求错误 ${status}: ${url}`,
-        description: errorText
+        message: `${errorText}`,
+        description: `请求错误 ${status}: ${url}`
       });
-    
-    
   }
-  return response;
+  return data;
 };
 
 /**
