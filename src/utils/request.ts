@@ -21,6 +21,7 @@ const codeMessage = {
 
 const errorMessage = {
   40203: "无此账号",
+  40200: "账号已存在",
 };
 
 /**
@@ -30,15 +31,16 @@ const errorHandler = (error: { response: Response, data: {[key: string]: any} })
   const { response, data } = error;
   if (response && response.status) {
     var errorText = codeMessage[response.status] || response.statusText;
-    const { status, url } = response;
+    // const { status, url } = response;
     if (data.code >= 40000 && data.code <= 50000) {
       errorText = errorMessage[data.code];
     }
       notification.error({
         message: `${errorText}`,
-        description: `请求错误 ${status}: ${url}`
+        // description: `请求错误 ${status}: ${url}`
       });
   }
+  console.log(data);
   return data;
 };
 

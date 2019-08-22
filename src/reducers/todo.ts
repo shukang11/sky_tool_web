@@ -1,4 +1,4 @@
-import { createAction, handleActions, handleAction } from "redux-actions";
+import { handleActions, createAction } from "redux-actions";
 
 const SET_TODOS = "SET_TODOS";
 const TOGGLE_TODO = "TOGGLE_TODO";
@@ -15,8 +15,9 @@ export declare interface ITodoModel {
 }
 
 export declare interface ITodo {
-  todos: Array<ITodoModel>;
-  visibilityFilter: FilterStyle;
+  todos?: Array<ITodoModel>;
+  visibilityFilter?: FilterStyle;
+  toggleId?: number;
 }
 
 const defaultState: ITodo = {
@@ -24,43 +25,48 @@ const defaultState: ITodo = {
   visibilityFilter: 'all'
 };
 
-interface Action<T> {
-  type: string;
-  payload: T;
-  error?: boolean;
-}
 
-export const set_visibility_filter_action = function(filter: FilterStyle): Action<FilterStyle> {
-  return {
-    type: SET_VISIBILITY_FILTER,
-    payload: filter,
-  }
-}
+export const set_visibility_filter_action = createAction(
+  SET_VISIBILITY_FILTER,
+  (filter: FilterStyle) => ({filter: filter})
+)
 
-export const set_todos_action = function(todos: Array<ITodoModel>): Action<Array<ITodoModel>> {
-  return {
-    type: SET_TODOS,
-    payload: todos,
-  }
-}
+export const set_todos_action = createAction(
+  SET_TODOS, 
+  (todos: Array<ITodoModel>) => ({todos: todos})
+);
 
-export const toggle_todo_action = function(id: number): Action<number> {
-  return {
-    type: TOGGLE_TODO,
-    payload: id
-  }
-}
+export const toggle_todo_action = createAction(
+  TOGGLE_TODO,
+  (toggleId: number) => ({toggleId: toggleId})
+  );
 
 // action handler
 const reducers = handleActions(
   {
-    [SET_VISIBILITY_FILTER]: (state, action: Action<FilterStyle>) => {
+    [SET_VISIBILITY_FILTER]: (state: ITodo, action) => {
       return {
-        todos: state.todos,
-        visibilityFilter: action.payload,
-      };
+        ...state,
+        visibilityFilter: action.payload.visibilityFilter
+      }
     },
-    
+    [TOGGLE_TODO]: (state: ITodo, action) => {
+      return {
+        ...state,
+        todos: state.todos.map( (item) => {
+          return {
+            ...item, 
+            state: item.id===action.payload.toggleId&&item.state===1 ? 2 : 1
+          }
+        })
+      }
+    },
+    [SET_TODOS]: (state: ITodo, action) => {
+      return {
+        ...state,
+        todos: action.payload.todos
+      }
+    },
   },
   defaultState
 );

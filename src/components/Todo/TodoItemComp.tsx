@@ -29,7 +29,7 @@ class TodoItemComp extends React.Component<
   render() {
     if (this.props.style === "add") {
       return (
-        <div className="add-item">
+        <div className="item">
           <List.Item key={this.props.key}>
             <List.Item.Meta
               title={
@@ -61,7 +61,22 @@ class TodoItemComp extends React.Component<
         </div>
       );
     }
-    return <div>Item</div>;
+    // normal
+    return <div className="item">
+          <List.Item key={this.props.key}>
+            <List.Item.Meta
+              title={
+                this.props.title
+              }
+              description={
+                "待办事项"
+              }
+              avatar={
+                <Avatar size='default' icon='user'></Avatar>
+              }
+            />
+          </List.Item>
+        </div>;
   }
 }
 

@@ -14,7 +14,7 @@ class HomeHeaderComp extends React.Component<IHomeHeaderProps, IHomeHeaderState>
     render() {
         return (
             <div className="header">
-                <Avatar className='header-icon' size='default' icon='large'></Avatar>
+                <Avatar className='header-icon' size='default' icon='user'></Avatar>
             </div>
         );
     }

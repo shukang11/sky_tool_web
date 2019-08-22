@@ -15,7 +15,7 @@ import logger from "redux-logger";
 import LoginComp from "./pages/login/login";
 import HomeComp from './components/Home/home';
 
-const store = createStore(rootReducers, applyMiddleware(thunk, logger));
+const store = createStore(rootReducers, applyMiddleware(logger));
 class App extends React.Component {
   public render() {
     return (

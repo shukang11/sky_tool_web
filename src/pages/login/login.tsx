@@ -39,7 +39,10 @@ class LoginComp extends React.Component<ILoginProps, ILoginState> {
       return;
     }
     login(name, password).then(r => {
-      this.props.setTokenAction(r.token);
+      if (r.data.token === null || r.data.token === undefined) {
+        return;
+      }
+      this.props.setTokenAction(r.data.token);
       this.props.history.push("/app");
       return;
     });
@@ -56,8 +59,12 @@ class LoginComp extends React.Component<ILoginProps, ILoginState> {
       return;
     }
     register(name, password).then(r => {
-      if (r.id) {
-        this.onLoginClicked();
+      console.log(r);
+      if (r.user_id) {
+        message.success("注册成功");
+        setTimeout(() => {
+          this.onLoginClicked();
+        }, 1);
       }
     });
   }
