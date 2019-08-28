@@ -4,7 +4,6 @@ import {
   ITodoModel,
   ITodo,
   set_todos_action,
-  set_visibility_filter_action,
   FilterStyle
 } from "../../reducers/todo";
 import { filterTodo, addTodo } from "../../services/todo";

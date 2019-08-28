@@ -16,15 +16,15 @@ export const toggleCollapsedAction = createAction(
 );
 
 const reducers = handleActions(
-    {
-        [TOGGLE_MENU_COLLAPSED]: (state: IAPPState, action) => {
-            return {
-              ...state,
-              isMenuCollapsed: action.payload.isMenuCollapsed
-            }
-          }
-    },
-    defaultState
+  {
+    [TOGGLE_MENU_COLLAPSED]: (state: IAPPState, action) => {
+      return {
+        ...state,
+        isMenuCollapsed: action.payload.isMenuCollapsed
+      };
+    }
+  },
+  defaultState
 );
 
 export default reducers;
