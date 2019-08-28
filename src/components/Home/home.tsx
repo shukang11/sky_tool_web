@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Layout } from "antd";
 import { Route } from "react-router";
+import { connect } from "react-redux";
 
 import allComponents from "../index";
 import routesConfig from "../../routes/config";
@@ -9,18 +10,17 @@ import HomeSiderComp from "./HomeSider";
 import HomeHeaderComp from "./HomeHeader";
 const { Content } = Layout;
 import { IMenuItem, IMenuModel } from "./../../routes/config";
+import { IAPPState, toggleCollapsedAction } from "src/reducers/app";
 
-interface IHomeProps {}
+interface IHomeProps {
+  isMenuCollapsed: boolean;
+}
 
 interface IHomeState {
-  isMenuCollapsed: boolean;
 }
 class HomeComp extends React.Component<IHomeProps, IHomeState> {
   constructor(props: IHomeProps) {
     super(props);
-    this.state = {
-      isMenuCollapsed: false
-    };
   }
   renderRouteItem(item: IMenuItem) {
     return (
@@ -37,7 +37,7 @@ class HomeComp extends React.Component<IHomeProps, IHomeState> {
     return item.subs.map(r => this.renderRouteItem(r));
   }
   render() {
-    const { isMenuCollapsed } = this.state;
+    const { isMenuCollapsed } = this.props;
 
     return (
       <Layout style={styles.BodyStyle}>
@@ -92,4 +92,15 @@ const styles = {
     textAlign: "center"
   }
 };
-export default HomeComp;
+
+const mapStateToProps = (state: { app: IAPPState }): IHomeProps => {
+  return {
+    isMenuCollapsed: state.app.isMenuCollapsed
+  };
+};
+
+const mapDispatchToProps = dispatch => ({
+  toggleMenuCollapse: (isCollapsed: boolean) => dispatch(toggleCollapsedAction(isCollapsed))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(HomeComp);

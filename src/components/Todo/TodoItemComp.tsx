@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Avatar, Input, Icon, Button, List } from "antd";
+import { Avatar, Input, Button, List } from "antd";
 
 declare const ItemStyle: ["add", "normal"];
 export declare type ItemStyle = (typeof ItemStyle)[number];
@@ -49,6 +49,9 @@ class TodoItemComp extends React.Component<
                   className="add-button"
                   onClick={() => {
                     if (this.props.onCommit) {
+                      this.setState({
+                        inputContent: ''
+                      });
                       this.props.onCommit(this.state.inputContent);
                     }
                   }}

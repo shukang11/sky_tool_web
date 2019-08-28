@@ -39,6 +39,7 @@ class LoginComp extends React.Component<ILoginProps, ILoginState> {
       return;
     }
     login(name, password).then(r => {
+      if (r.data === null) { return }
       if (r.data.token === null || r.data.token === undefined) {
         return;
       }
