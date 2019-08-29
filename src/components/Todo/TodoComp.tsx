@@ -8,8 +8,8 @@ import {
 } from "../../reducers/todo";
 import { filterTodo, addTodo } from "../../services/todo";
 import { connect } from "react-redux";
-import { Button, List, message, Empty } from "antd";
-import TodoItemComp from "./TodoItemComp";
+import { Button, message, Empty, Table } from "antd";
+import { EditableCell, EditableFromRow } from "../Table/EditTableCell";
 
 import "./todo.css";
 
@@ -77,46 +77,13 @@ class TodoComp extends React.Component<ITodoProps, ITodoState> {
   doneHandle(id: number) {}
 
   render() {
-    const { todos, visibilityFilter } = this.props;
+    const { todos } = this.props;
     const { isFetching, pageSize } = this.state;
 
     if (isFetching === true) {
       return <PageLoading />;
     }
-    var f_todos: Array<object> = [];
-    if (todos === null || todos === undefined || todos.length === 0) {
-      if (this.state.isAdding === true) {
-        f_todos = [
-          <TodoItemComp
-            style="add"
-            onCommit={(e: string) => {
-              this.addHandle(e);
-            }}
-          ></TodoItemComp>
-        ];
-      } else {
-        f_todos = [];
-      }
-    } else {
-      f_todos.push(
-        <TodoItemComp
-          style="add"
-          onCommit={(e: string) => {
-            this.addHandle(e);
-          }}
-        ></TodoItemComp>
-      );
-      todos.forEach(t => {
-        f_todos.push(
-          <TodoItemComp
-            state={t.state}
-            title={t.text}
-            style="normal"
-          ></TodoItemComp>
-        );
-      });
-    }
-    if (f_todos.length === 0 && this.state.isAdding === false) {
+    if (todos.length === 0 && this.state.isAdding === false) {
       // 没有内容
       return (
         <Empty
@@ -139,27 +106,51 @@ class TodoComp extends React.Component<ITodoProps, ITodoState> {
         </Empty>
       );
     }
+    const dataSource = todos.map((e, i) => ({
+      index: i,
+      content: e.text,
+      status: e.state,
+      key: e.id,
+      obj: e,
+    }));
+    
+    const columns = [
+      {
+        title: '状态',
+        dataIndex: 'status',
+        key: 'status',
+      },
+      {
+        title: '内容',
+        dataIndex: 'content',
+        key: 'content',
+      },
+      {
+        title: '操作',
+        dataIndex: 'obj',
+        key: 'action',
+        render: (e: ITodoModel) => {
+          // 状态
+          if (e.state === 1) { // 已完成
+            return [<Button key={e.id} onClick={() => {
+              console.log(e);
+            }} type="primary">未完成</Button>, <Button key={e.id} type="danger">删除</Button>]
+          } else if (e.state === 2) { // 未完成
+            return <Button key={e.id} type="primary">完成</Button>
+          }
+          return status;
+        }
+      },
+      
+    ];
+
     return (
       <div>
         <div className="content">
-          <List
-            className="content-list"
-            itemLayout="vertical"
-            size="large"
-            pagination={{
-              position: "bottom",
-              pageSize: pageSize,
-              onChange: p => {
-                this.setState({
-                  page: p
-                });
-              }
-            }}
-            dataSource={f_todos}
-            renderItem={item => {
-              return item;
-            }}
-          ></List>
+        <Button type="primary" icon="plus" size='default'>
+          添加
+        </Button>
+        <Table dataSource={dataSource} columns={columns} bordered></Table>
         </div>
       </div>
     );

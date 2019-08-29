@@ -1,16 +1,12 @@
 import * as React from "react";
 import PageLoading from "../PageLoading/index";
-import {
-  ITodoModel,
-  ITodo,
-  set_todos_action,
-  FilterStyle
-} from "../../reducers/todo";
 import { filterTodo, addTodo } from "../../services/todo";
 import { connect } from "react-redux";
 import { Button, List, message, Empty } from "antd";
 
-interface IRssProps {}
+interface IRssProps {
+  
+}
 
 interface IRssState {}
 class RssComp extends React.Component<IRssProps, IRssState> {
