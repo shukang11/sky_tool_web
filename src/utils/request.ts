@@ -29,6 +29,7 @@ const errorMessage = {
  */
 const errorHandler = (error: { response: Response, data: {[key: string]: any} }): object => {
   const { response, data } = error;
+  console.log(data);
   if (response && response.status) {
     var errorText = codeMessage[response.status] || response.statusText;
     // const { status, url } = response;
@@ -41,7 +42,8 @@ const errorHandler = (error: { response: Response, data: {[key: string]: any} })
       });
   }
   console.log(data);
-  return data;
+  if (data || data !== undefined) { return data; }
+  return response;
 };
 
 /**

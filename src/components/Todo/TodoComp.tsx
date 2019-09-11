@@ -8,7 +8,7 @@ import {
 } from "../../reducers/todo";
 import { filterTodo, addTodo } from "../../services/todo";
 import { connect } from "react-redux";
-import { Button, message, Empty, Table } from "antd";
+import { Button, message, Empty, Table, Input } from "antd";
 import { EditableCell, EditableFromRow } from "../Table/EditTableCell";
 
 import "./todo.css";
@@ -24,6 +24,7 @@ interface ITodoState {
   pageSize: number;
   page: number;
   isAdding: boolean;
+  contentToAdd?: string;
 }
 class TodoComp extends React.Component<ITodoProps, ITodoState> {
   constructor(props: ITodoProps) {
@@ -32,7 +33,8 @@ class TodoComp extends React.Component<ITodoProps, ITodoState> {
       isFetching: true,
       pageSize: 10,
       page: 1,
-      isAdding: false
+      isAdding: false,
+      contentToAdd: null,
     };
     this.addHandle = this.addHandle.bind(this);
     this.undoHandle = this.undoHandle.bind(this);
@@ -46,6 +48,7 @@ class TodoComp extends React.Component<ITodoProps, ITodoState> {
 
   filter(filter: FilterStyle) {
     filterTodo(filter).then(r => {
+      if (!r.data) { return; }
       if (Array.isArray(r.data)) {
         this.setState({
           isFetching: false
@@ -69,6 +72,9 @@ class TodoComp extends React.Component<ITodoProps, ITodoState> {
       return;
     }
     addTodo(content).then(r => {
+      this.setState({
+        contentToAdd:null
+      })
       this.filter("all");
     });
   }
@@ -78,7 +84,7 @@ class TodoComp extends React.Component<ITodoProps, ITodoState> {
 
   render() {
     const { todos } = this.props;
-    const { isFetching, pageSize } = this.state;
+    const { isFetching, pageSize, isAdding } = this.state;
 
     if (isFetching === true) {
       return <PageLoading />;
@@ -106,13 +112,16 @@ class TodoComp extends React.Component<ITodoProps, ITodoState> {
         </Empty>
       );
     }
-    const dataSource = todos.map((e, i) => ({
-      index: i,
-      content: e.text,
-      status: e.state,
-      key: e.id,
-      obj: e,
-    }));
+
+    var dataSource: Array<{[key: string]: any}> = [];
+    todos.forEach(function(element) {
+      dataSource.push({
+        content: element.text,
+        status: element.state,
+        obj: element,
+        key: element.id,
+      })
+    })
     
     const columns = [
       {
@@ -146,10 +155,19 @@ class TodoComp extends React.Component<ITodoProps, ITodoState> {
 
     return (
       <div>
-        <div className="content">
-        <Button type="primary" icon="plus" size='default'>
+        <div className="todoCompont-header">
+        <Button onClick={() => {
+          this.addHandle(this.state.contentToAdd)
+        }} type="primary" icon="plus" size='default'>
           添加
         </Button>
+        <Input onChange={(e) => {
+          this.setState({
+            contentToAdd:e.target.value
+          })
+        }} className="todoCompont-header-item" placeholder={'请输入事项'} />
+        </div>
+        <div className="todoCompont-content">
         <Table dataSource={dataSource} columns={columns} bordered></Table>
         </div>
       </div>
