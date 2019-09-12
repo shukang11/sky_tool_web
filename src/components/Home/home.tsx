@@ -42,7 +42,9 @@ class HomeComp extends React.Component<IHomeProps, IHomeState> {
     return (
       <Layout style={styles.BodyStyle}>
         <HomeSiderComp isMenuCollapsed={isMenuCollapsed} />
-        <Layout>
+        <Layout style={{
+              background: "#fff"
+        }}>
           <HomeHeaderComp />
           <Content
             style={{

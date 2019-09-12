@@ -10,6 +10,9 @@ interface IRssItemState {
 }
 
 class RssItemComp extends React.Component<IRssItemProps, IRssItemState> {
+    state = {
+        
+    }
     render() {
         return (
             <div>

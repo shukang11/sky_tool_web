@@ -1,5 +1,6 @@
 import { BASE_URL } from "./../utils/config";
 import request from "../utils/request";
+import { FilterStyle } from "src/reducers/todo";
 
 export async function addTodo(content: string): Promise<any> {
   var path: string = "/api/todo/add";
@@ -20,7 +21,7 @@ export async function removeTodo(id: number): Promise<any> {
 }
 
 // undo done all
-export async function filterTodo(filter: string): Promise<any> {
+export async function filterTodo(filter: FilterStyle): Promise<any> {
   var path: string = `/api/todo/filter/${filter}`;
   var params: object = { token: localStorage.getItem("token"), 'filter': filter };
   return await request.post(`${BASE_URL}${path}`, { params: params });

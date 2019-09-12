@@ -6,9 +6,9 @@ import {
   set_todos_action,
   FilterStyle
 } from "../../reducers/todo";
-import { filterTodo, addTodo } from "../../services/todo";
+import { filterTodo, addTodo, finishTodo, undoTodo } from "../../services/todo";
 import { connect } from "react-redux";
-import { Button, message, Empty, Table, Input } from "antd";
+import { Button, message, Empty, Table, Input, Row, Col } from "antd";
 import { EditableCell, EditableFromRow } from "../Table/EditTableCell";
 
 import "./todo.css";
@@ -34,7 +34,7 @@ class TodoComp extends React.Component<ITodoProps, ITodoState> {
       pageSize: 10,
       page: 1,
       isAdding: false,
-      contentToAdd: null,
+      contentToAdd: null
     };
     this.addHandle = this.addHandle.bind(this);
     this.undoHandle = this.undoHandle.bind(this);
@@ -48,7 +48,9 @@ class TodoComp extends React.Component<ITodoProps, ITodoState> {
 
   filter(filter: FilterStyle) {
     filterTodo(filter).then(r => {
-      if (!r.data) { return; }
+      if (!r.data) {
+        return;
+      }
       if (Array.isArray(r.data)) {
         this.setState({
           isFetching: false
@@ -73,18 +75,26 @@ class TodoComp extends React.Component<ITodoProps, ITodoState> {
     }
     addTodo(content).then(r => {
       this.setState({
-        contentToAdd:null
-      })
+        contentToAdd: null
+      });
       this.filter("all");
     });
   }
-  undoHandle(id: number) {}
+  undoHandle(id: number) {
+    undoTodo(id).then(r => {
+      this.filter("all");
+    });
+  }
 
-  doneHandle(id: number) {}
+  doneHandle(id: number) {
+    finishTodo(id).then(r => {
+      this.filter("all");
+    });
+  }
 
   render() {
     const { todos } = this.props;
-    const { isFetching, pageSize, isAdding } = this.state;
+    const { isFetching } = this.state;
 
     if (isFetching === true) {
       return <PageLoading />;
@@ -113,62 +123,118 @@ class TodoComp extends React.Component<ITodoProps, ITodoState> {
       );
     }
 
-    var dataSource: Array<{[key: string]: any}> = [];
+    var dataSource: Array<{ [key: string]: any }> = [];
     todos.forEach(function(element) {
       dataSource.push({
         content: element.text,
         status: element.state,
         obj: element,
-        key: element.id,
-      })
-    })
-    
+        key: element.id
+      });
+    });
+
     const columns = [
       {
-        title: '状态',
-        dataIndex: 'status',
-        key: 'status',
+        title: "状态",
+        dataIndex: "status",
+        key: "status",
+        render: (e:  number) => {
+          var content: string = ""
+          if (e === 1) {
+            content = "待完成"
+          } else if (e === 2) {
+            content = "已完成"
+          }
+          return (<div>{content}</div>)
+        }
       },
       {
-        title: '内容',
-        dataIndex: 'content',
-        key: 'content',
+        title: "内容",
+        dataIndex: "content",
+        key: "content"
       },
       {
-        title: '操作',
-        dataIndex: 'obj',
-        key: 'action',
+        title: "操作",
+        dataIndex: "obj",
+        key: "action",
         render: (e: ITodoModel) => {
           // 状态
-          if (e.state === 1) { // 已完成
-            return [<Button key={e.id} onClick={() => {
-              console.log(e);
-            }} type="primary">未完成</Button>, <Button key={e.id} type="danger">删除</Button>]
-          } else if (e.state === 2) { // 未完成
-            return <Button key={e.id} type="primary">完成</Button>
+          if (e.state === 1) {
+            // 已完成
+            return (
+              <div>
+                <Button
+                  onClick={() => {
+                    this.doneHandle(e.id);
+                  }}
+                  type="primary"
+                >
+                  完成它
+                </Button>
+                ,
+                <Button
+                  onClick={() => {
+                    this.undoHandle(e.id);
+                  }}
+                  type="danger"
+                >
+                  删除
+                </Button>
+              </div>
+            );
+          } else if (e.state === 2) {
+            // 未完成
+            return (
+              <div>
+                <Button
+                  onClick={() => {
+                    this.undoHandle(e.id);
+                  }}
+                  type="primary"
+                >
+                  取消完成
+                </Button>
+              </div>
+            );
           }
           return status;
         }
-      },
-      
+      }
     ];
 
     return (
       <div>
         <div className="todoCompont-header">
-        <Button onClick={() => {
-          this.addHandle(this.state.contentToAdd)
-        }} type="primary" icon="plus" size='default'>
-          添加
-        </Button>
-        <Input onChange={(e) => {
-          this.setState({
-            contentToAdd:e.target.value
-          })
-        }} className="todoCompont-header-item" placeholder={'请输入事项'} />
+          <Row>
+            <Col span={20}>
+              <Input
+                value={this.state.contentToAdd}
+                onChange={e => {
+                  this.setState({
+                    contentToAdd: e.target.value
+                  });
+                }}
+                className="todoCompont-header-input"
+                placeholder={"请输入事项"}
+              />
+            </Col>
+            <Col span={4}>
+              <Button
+                className="todoCompont-header-button"
+                onClick={() => {
+                  this.addHandle(this.state.contentToAdd);
+                }}
+                type="primary"
+                icon="plus"
+                size="default"
+              >
+                添加
+              </Button>
+            </Col>
+          </Row>
         </div>
         <div className="todoCompont-content">
-        <Table dataSource={dataSource} columns={columns} bordered></Table>
+          <Table dataSource={dataSource} columns={columns} bordered></Table>
         </div>
       </div>
     );

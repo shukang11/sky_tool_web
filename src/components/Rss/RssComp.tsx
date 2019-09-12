@@ -10,9 +10,8 @@ interface IRssProps {
 
 interface IRssState {}
 class RssComp extends React.Component<IRssProps, IRssState> {
-  constructor(props) {
-    super(props);
-    this.setState({});
+  state = {
+    
   }
 
   render() {

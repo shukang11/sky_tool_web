@@ -7,11 +7,16 @@
 }
 
 .todoCompont-header {
-    height: 4rem;
+    height: 2rem;
     width: 100%;
 }
 
-.todoCompont-header-item {
+.todoCompont-header-input {
     /* float: left; */
-    width: 60%;
+    /* width: 60%; */
+}
+
+.todoCompont-header-button {
+    width: 4rem;
+    margin-left: .5rem;
 }
