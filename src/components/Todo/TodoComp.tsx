@@ -9,7 +9,6 @@ import {
 import { filterTodo, addTodo, finishTodo, undoTodo } from "../../services/todo";
 import { connect } from "react-redux";
 import { Button, message, Empty, Table, Input, Row, Col } from "antd";
-import { EditableCell, EditableFromRow } from "../Table/EditTableCell";
 
 import "./todo.css";
 
@@ -69,8 +68,8 @@ class TodoComp extends React.Component<ITodoProps, ITodoState> {
   }
 
   addHandle(content: string) {
-    if (content.length === 0) {
-      message.warning("请输入待办事项");
+    if (!content || content.length === 0) {
+      message.error("请输入待办事项");
       return;
     }
     addTodo(content).then(r => {

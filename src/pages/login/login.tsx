@@ -1,7 +1,6 @@
 import * as React from "react";
-import { Button, Input, message, Form, Card, Row, Col } from "antd";
+import { Button, Input, Form, Card, Row, Col } from "antd";
 import { connect } from "react-redux";
-import { bindActionCreators, Dispatch } from "redux";
 import * as H from "history";
 import { login, register } from "./../../services/user";
 import { setTokenAction } from "../../reducers/user";

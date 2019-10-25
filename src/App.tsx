@@ -9,7 +9,6 @@ import {
 import rootReducers from "./reducers";
 import { createStore, applyMiddleware } from "redux";
 import { Provider } from "react-redux";
-import thunk from "redux-thunk";
 import logger from "redux-logger";
 
 import LoginComp from "./pages/login/login";
