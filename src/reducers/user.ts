@@ -3,16 +3,19 @@ import { string } from "prop-types";
 
 const SET_TOKEN = "SET_TOKEN";
 
-interface IUSERState {
+export declare interface IUSERState {
   token?: string;
+  isLogedIn?: boolean;
 }
+
 const defaultState: IUSERState = {
-  token: null
+  token: null,
+  isLogedIn: localStorage.getItem('token') !== undefined,
 };
 
-export const setTokenAction = createAction<IUSERState, string>(
+export const setTokenAction = createAction<IUSERState, string | null>(
   SET_TOKEN,
-  (token: string) => ({ token: token })
+  (token?: string) => ({ token: token })
 );
 
 const reducers = handleActions(
@@ -23,7 +26,8 @@ const reducers = handleActions(
       localStorage.setItem('token', token);
       return {
         ...state,
-        token: token
+        token: token,
+        isLogedIn: token === undefined,
       }
     }
   },

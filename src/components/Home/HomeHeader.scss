@@ -1,0 +1,19 @@
+.header-container {
+  height: 64px;
+  line-height: 64px;
+  .header {
+    .right {
+      float: right;
+      margin-right: 20px;
+      font-size: 1.1rem;
+      .right-item {
+        margin-right: 10px;
+      }
+    }
+  }
+}
+
+.header-icon {
+  display: inline-block;
+  margin-left: 1rem;
+}

@@ -1,3 +1,22 @@
 .empty {
     margin-top: 6rem;
 }
+
+.todoCompont-content {
+    margin-top: 1rem;
+}
+
+.todoCompont-header {
+    height: 2rem;
+    width: 100%;
+}
+
+.todoCompont-header-input {
+    /* float: left; */
+    /* width: 60%; */
+}
+
+.todoCompont-header-button {
+    width: 4rem;
+    margin-left: .5rem;
+}

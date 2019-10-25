@@ -41,7 +41,8 @@ const errorHandler = (error: { response: Response, data: {[key: string]: any} })
       });
   }
   console.log(data);
-  return data;
+  if (data || data !== undefined) { return data; }
+  return response;
 };
 
 /**

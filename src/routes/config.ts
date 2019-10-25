@@ -22,6 +22,11 @@ const menus: Array<IMenuModel> = [{
             key: '/app/tool/todo',
             title: '待办',
             component: 'TodoComp',
+        },
+        {
+            key: '/app/tool/rss',
+            title: 'Rss订阅',
+            component: 'RssComp',
         }
     ]
 }]
