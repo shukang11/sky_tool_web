@@ -22,7 +22,7 @@ class App extends React.Component {
       <Provider store={store}>
         <Router>
           <Switch>
-            <Route exact path='/' render={() => <Redirect to='/app' push></Redirect>} />
+            <Route exact path='/' render={() => <Redirect to='/login' push></Redirect>} />
             <Route path='/login' component={LoginComp}></Route>
             <Route path='/app' component={HomeComp}></Route>
           </Switch>

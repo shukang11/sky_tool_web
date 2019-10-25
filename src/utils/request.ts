@@ -29,7 +29,6 @@ const errorMessage = {
  */
 const errorHandler = (error: { response: Response, data: {[key: string]: any} }): object => {
   const { response, data } = error;
-  console.log(data);
   if (response && response.status) {
     var errorText = codeMessage[response.status] || response.statusText;
     // const { status, url } = response;

@@ -33,7 +33,12 @@ class LoginComp extends React.Component<ILoginProps, ILoginState> {
 
   onLoginClicked() {
     const values = this.props.form.getFieldsValue();
-    console.log(values);
+    const {name, password} = values;
+    login(name, password).then(r => {
+      if (!r.data) { return}
+      localStorage.setItem('token', r.data.token)
+      this.props.history.push('/app')
+    })
   }
 
   onRegisterClicked() {}
