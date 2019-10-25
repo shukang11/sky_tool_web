@@ -1,16 +1,19 @@
 import * as React from "react";
-import { Button, Input, message } from "antd";
+import { Button, Input, message, Form, Card, Row, Col } from "antd";
 import { connect } from "react-redux";
-import {bindActionCreators, Dispatch} from 'redux';
-import "./login.css";
+import { bindActionCreators, Dispatch } from "redux";
 import * as H from "history";
 import { login, register } from "./../../services/user";
 import { setTokenAction } from "../../reducers/user";
+import "./login.scss";
 
-interface ILoginProps {
+const FormItem = Form.Item;
+
+type ILoginProps = Readonly<{
+  form: any;
   history: H.History;
   setTokenAction: Function;
-}
+}>;
 
 interface ILoginState {
   name: string;
@@ -29,89 +32,76 @@ class LoginComp extends React.Component<ILoginProps, ILoginState> {
   }
 
   onLoginClicked() {
-    const { name, password } = this.state;
-    if (name.length === 0) {
-      message.warning("请输入正确的名称");
-      return;
-    }
-    if (password.length < 6 || password.length > 18) {
-      message.warning("请输入6-18位密码");
-      return;
-    }
-    login(name, password).then(r => {
-      if (r.data === null) { return }
-      if (r.data.token === null || r.data.token === undefined) {
-        return;
-      }
-      this.props.setTokenAction(r.data.token);
-      this.props.history.push("/app");
-      return;
-    });
+    const values = this.props.form.getFieldsValue();
+    console.log(values);
   }
 
-  onRegisterClicked() {
-    const { name, password } = this.state;
-    if (name.length === 0) {
-      message.warning("请输入正确的名称");
-      return;
-    }
-    if (password.length < 6 || password.length > 18) {
-      message.warning("请输入6-18位密码");
-      return;
-    }
-    register(name, password).then(r => {
-      console.log(r);
-      if (r.user_id) {
-        message.success("注册成功");
-        setTimeout(() => {
-          this.onLoginClicked();
-        }, 1);
-      }
-    });
-  }
+  onRegisterClicked() {}
 
   render() {
-    const { name, password } = this.state;
+    const {
+      form: { getFieldDecorator }
+    } = this.props;
     return (
       <div className="container">
-        <Input
-          className="input-item"
-          placeholder="请输入用户名"
-          value={name}
-          onChange={e => {
-            this.setState({
-              name: e.target.value
-            });
-          }}
-        />
-        <Input.Password
-          className="input-item"
-          placeholder="密码"
-          value={password}
-          onChange={e => {
-            this.setState({
-              password: e.target.value
-            });
-          }}
-          required={true}
-        />
-        <div className="input-item">
-          <Button
-            className="input-item-button-login"
-            size="large"
-            color="blue"
-            onClick={this.onLoginClicked}
-          >
-            登录
-          </Button>
-          <Button
-            className="input-item-button-register"
-            size="large"
-            onClick={this.onRegisterClicked}
-          >
-            注册
-          </Button>
-        </div>
+        <Card className='form-card' bordered={false}>
+          <Form className="login-form">
+            <FormItem>
+              {getFieldDecorator("name", {
+                rules: [
+                  {
+                    required: true,
+                    message: "please inpput your name"
+                  },
+                  {
+                    min: 5,
+                    max: 18,
+                    message: "请输入5-18位字符"
+                  }
+                ]
+              })(<Input placeholder="请输入用户名" />)}
+            </FormItem>
+            <FormItem>
+              {getFieldDecorator("password", {
+                rules: [
+                  {
+                    required: true,
+                    message: "please input your password"
+                  }
+                ]
+              })(<Input.Password placeholder="密码" required={true} />)}
+            </FormItem>
+            <Row>
+              <Col span={12}>
+                <FormItem>
+                  <Button
+                    type="primary"
+                    htmlType="submit"
+                    onClick={() => {
+                      this.onLoginClicked();
+                    }}
+                  >
+                    登录
+                  </Button>
+                </FormItem>
+              </Col>
+
+              <Col span={12}>
+                <FormItem className='form-register'>
+                  <Button
+                    type='primary'
+                    htmlType="button"
+                    onClick={() => {
+                      this.onRegisterClicked();
+                    }}
+                  >
+                    注册
+                  </Button>
+                </FormItem>
+              </Col>
+            </Row>
+          </Form>
+        </Card>
       </div>
     );
   }
@@ -128,4 +118,4 @@ const mapDispatchToProps = dispatch => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(LoginComp);
+)(Form.create<ILoginProps>()(LoginComp));
