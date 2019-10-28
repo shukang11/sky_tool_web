@@ -35,7 +35,7 @@ class LoginComp extends React.Component<ILoginProps, ILoginState> {
     const {name, password} = values;
     if (!name || !password) { return; }
     login(name, password).then(r => {
-      if (!r.data) { return}
+      if (!r || !r.data) { return}
       localStorage.setItem('token', r.data.token)
       this.props.history.push('/app')
     })

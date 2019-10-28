@@ -4,7 +4,8 @@ import request from "../utils/request";
 
 export async function login(name: string, password: string): Promise<any> {
   password = MD5(password);
-  return await request.post(`${BASE_URL}/api/user/login`, {
+  const url = `${BASE_URL}/api/user/login`;
+  return await request.post(url , {
     params: { email: name, password: password }
   });
 }
