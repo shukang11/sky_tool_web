@@ -1,33 +1,41 @@
-
 export declare interface IMenuModel {
-    key: string;
-    title: string;
-    icon: string;
-    subs: Array<IMenuItem>;
+  key: string;
+  title: string;
+  icon: string;
+  subs?: Array<IMenuItem>;
+  component?: string;
 }
 
 export declare interface IMenuItem {
-    key: string;
-    title: string;
-    icon?: string;
-    component?: string;
+  key: string;
+  title: string;
+  icon?: string;
+  component?: string;
 }
 
-const menus: Array<IMenuModel> = [{
-    key: '/app/tool',
-    title: '工具',
-    icon: 'robot',
+const menus: Array<IMenuModel> = [
+  {
+    key: "/app/dashboard",
+    title: "看板",
+    icon: "pie-chart",
+    component: "Dashboard"
+  },
+  {
+    key: "/app/tool",
+    title: "工具",
+    icon: "robot",
     subs: [
-        {
-            key: '/app/tool/todo',
-            title: '待办',
-            component: 'TodoComp',
-        },
-        {
-            key: '/app/tool/rss',
-            title: 'Rss订阅',
-            component: 'RssComp',
-        }
+      {
+        key: "/app/tool/todo",
+        title: "待办",
+        component: "TodoComp"
+      },
+      {
+        key: "/app/tool/rss",
+        title: "Rss订阅",
+        component: "RssComp"
+      }
     ]
-}]
+  }
+];
 export default menus;
