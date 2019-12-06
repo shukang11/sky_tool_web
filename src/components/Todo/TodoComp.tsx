@@ -47,13 +47,13 @@ class TodoComp extends React.Component<ITodoProps, ITodoState> {
 
   filter(filter: FilterStyle) {
     filterTodo(filter).then(r => {
-      if (!r.data) {
+      this.setState({
+        isFetching: false
+      });
+      if (!r || !r.data) {
         return;
       }
       if (Array.isArray(r.data)) {
-        this.setState({
-          isFetching: false
-        });
         var todos: Array<ITodoModel> = [];
         r.data.forEach((i: { [key: string]: any }) => {
           todos.push({

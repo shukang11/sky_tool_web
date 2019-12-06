@@ -33,8 +33,9 @@ class LoginComp extends React.Component<ILoginProps, ILoginState> {
   onLoginClicked() {
     const values = this.props.form.getFieldsValue();
     const {name, password} = values;
+    if (!name || !password) { return; }
     login(name, password).then(r => {
-      if (!r.data) { return}
+      if (!r || !r.data) { return}
       localStorage.setItem('token', r.data.token)
       this.props.history.push('/app')
     })
@@ -46,10 +47,14 @@ class LoginComp extends React.Component<ILoginProps, ILoginState> {
     const {
       form: { getFieldDecorator }
     } = this.props;
+    const space = 7;
+    const contentWidth = 24 - space * 2;
     return (
       <div className="container">
-        <Card className='form-card' bordered={false}>
-          <Form className="login-form">
+        <Row className='form-wrap'>
+          <Col span={space}></Col>
+          <Col span={contentWidth}>
+          <Form>
             <FormItem>
               {getFieldDecorator("name", {
                 rules: [
@@ -105,7 +110,9 @@ class LoginComp extends React.Component<ILoginProps, ILoginState> {
               </Col>
             </Row>
           </Form>
-        </Card>
+          </Col>
+          <Col span={space}></Col>
+        </Row>
       </div>
     );
   }

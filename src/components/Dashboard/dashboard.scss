@@ -1,0 +1,30 @@
+.row {
+    margin-top: 1rem;
+    .first-report-item {
+        align-self: auto;
+        text-align: center;
+    }
+}
+.first-row {
+    .num {
+        font-size: 1.2rem;
+        font-weight: bold;
+    }
+    .label {
+        font-size: 0.8rem;
+    }
+    justify-content: center;
+    vertical-align: middle;
+}
+
+.danger {
+    color: red;
+}
+
+.warning {
+    color: yellowgreen;
+}
+
+.fine {
+    color: green;
+}
