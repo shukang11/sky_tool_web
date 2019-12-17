@@ -170,15 +170,6 @@ class TodoComp extends React.Component<ITodoProps, ITodoState> {
                 >
                   完成它
                 </Button>
-                ,
-                <Button
-                  onClick={() => {
-                    this.undoHandle(e.id);
-                  }}
-                  type="danger"
-                >
-                  删除
-                </Button>
               </div>
             );
           } else if (e.state === 2) {
