@@ -1,5 +1,4 @@
-import { createAction, handleAction, handleActions } from "redux-actions";
-import { string } from "prop-types";
+import { createAction, handleActions } from "redux-actions";
 
 const SET_TOKEN = "SET_TOKEN";
 

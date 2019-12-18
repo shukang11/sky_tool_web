@@ -2,12 +2,19 @@ import * as React from "react";
 import ReactEcharts from "echarts-for-react";
 import { connect } from "react-redux";
 import { Row, Col, Card, message } from "antd";
+import { dashboardInfo as getDashBoardInfo } from "../../services/dashboard";
 import "./dashboard.scss";
+
+declare interface IQuotaModel {
+  rssEnableCount?: number;
+  rssTodayAppendCount?: number;
+}
 
 type IDashboardProps = Readonly<{}>;
 
 interface IDashboardState {
   onEvent: Object;
+  quota: IQuotaModel;
 }
 
 class DashboardComp extends React.Component<IDashboardProps, IDashboardState> {
@@ -16,13 +23,29 @@ class DashboardComp extends React.Component<IDashboardProps, IDashboardState> {
     this.state = {
       onEvent: {
         click: this.onChartClick
-      }
+      },
+      quota: {}
     };
   }
 
   onChartClick = () => {
     message.success("onClicked");
   };
+
+  componentDidMount() {
+    getDashBoardInfo().then(r => {
+      if (!r || !r.data) {
+        return;
+      }
+      var quota: IQuotaModel = {
+        rssEnableCount: r.data.rss_enable_count,
+        rssTodayAppendCount: r.data.today_rss_content_count
+      };
+      this.setState({
+        quota: quota
+      });
+    });
+  }
 
   render() {
     const barOption = {
@@ -126,25 +149,17 @@ class DashboardComp extends React.Component<IDashboardProps, IDashboardState> {
       <div>
         <Card className="row first-row">
           <Row>
-            <Col className="first-report-item fine" span={6}>
-              <span className="num">1009</span>
+            <Col className="first-report-item fine" span={12}>
+              <span className="num">
+                {this.state.quota.rssTodayAppendCount}
+              </span>
               <br />
               <span className="label">今日新增</span>
             </Col>
-            <Col className="first-report-item warning" span={6}>
-              <span className="num">0</span>
+            <Col className="first-report-item danger" span={12}>
+              <span className="num">{this.state.quota.rssEnableCount}</span>
               <br />
-              <span className="label">新增源</span>
-            </Col>
-            <Col className="first-report-item" span={6}>
-              <span className="num">10</span>
-              <br />
-              <span className="label">PV</span>
-            </Col>
-            <Col className="first-report-item danger" span={6}>
-              <span className="num">0</span>
-              <br />
-              <span className="label">错误数</span>
+              <span className="label">我的源</span>
             </Col>
           </Row>
         </Card>
@@ -174,7 +189,4 @@ const mapStateToProps = (state: { rss: any }) => {
 
 const mapDispatchToProps = (dispatch: any) => ({});
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(DashboardComp);
+export default connect(mapStateToProps, mapDispatchToProps)(DashboardComp);
