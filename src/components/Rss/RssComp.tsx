@@ -49,6 +49,10 @@ class RssComp extends React.Component<IRssProps, IRssState> {
       if (!r || !r.data) {
         return;
       }
+      this.setState({
+        pages: 0,
+        rsses: []
+      })
       this.fetchRssLimit();
     });
     this.setState({ isShowAddRssLink: false });
