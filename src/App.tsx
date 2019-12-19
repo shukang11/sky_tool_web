@@ -18,6 +18,10 @@ const store = createStore(rootReducers, applyMiddleware(logger));
 class App extends React.Component {
   public render() {
     var token: string = localStorage.getItem("token");
+    var redirect = <Redirect to="/login" push></Redirect>;
+    if (token !== null && token.length > 10) {
+      <Redirect to="/app/dashboard" push></Redirect>
+    }
     return (
       <Provider store={store}>
         <Router>
@@ -26,11 +30,7 @@ class App extends React.Component {
               exact
               path="/"
               render={() =>
-                token === null ? (
-                  <Redirect to="/login" push></Redirect>
-                ) : (
-                  <Redirect to="/app/dashboard" push></Redirect>
-                )
+                redirect
               }
             />
             <Route path="/login" component={LoginComp}></Route>

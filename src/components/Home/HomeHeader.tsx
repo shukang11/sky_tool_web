@@ -1,15 +1,18 @@
 import * as React from "react";
 import { Avatar, Button, Row, Col } from "antd";
 import "./HomeHeader.scss";
+import { withRouter } from 'react-router-dom';
 import { connect } from "react-redux";
+import {RouteComponentProps} from "react-router";
 import { IUSERState as IUser, setTokenAction, setUserInfo } from "./../../reducers/user";
 import { getInfo } from "../../services/user";
 
-type IHomeHeaderProps = Readonly<{
+
+interface IHomeHeaderProps extends RouteComponentProps<any> {
   user: IUser;
   setTokenAction?: Function;
   setUserInfo?: Function;
-}>;
+}
 
 interface IHomeHeaderState {}
 class HomeHeaderComp extends React.Component<
@@ -18,6 +21,7 @@ class HomeHeaderComp extends React.Component<
 > {
   logoutClicked = () => {
     this.props.setTokenAction(null);
+    this.props.history.push('/');
   };
 
   componentDidMount() {
@@ -28,7 +32,7 @@ class HomeHeaderComp extends React.Component<
       var user: IUser = {
         email: r.data.email
       }
-      this.props.setUserInfo(user)
+      this.props.setUserInfo(user);
     });
   }
   render() {
@@ -73,4 +77,4 @@ const mapDispatchToProps = (dispatch: any) => ({
   setUserInfo: (user: IUser) => dispatch(setUserInfo(user)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(HomeHeaderComp);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(HomeHeaderComp));
