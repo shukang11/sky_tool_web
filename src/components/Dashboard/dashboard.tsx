@@ -34,6 +34,7 @@ class DashboardComp extends React.Component<IDashboardProps, IDashboardState> {
 
   componentDidMount() {
     getDashBoardInfo().then(r => {
+      
       if (!r || !r.data) {
         return;
       }
