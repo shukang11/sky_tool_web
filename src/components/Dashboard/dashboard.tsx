@@ -8,6 +8,7 @@ import "./dashboard.scss";
 declare interface IQuotaModel {
   rssEnableCount?: number;
   rssTodayAppendCount?: number;
+  rssCount?: number;
 }
 
 type IDashboardProps = Readonly<{}>;
@@ -40,7 +41,8 @@ class DashboardComp extends React.Component<IDashboardProps, IDashboardState> {
       }
       var quota: IQuotaModel = {
         rssEnableCount: r.data.rss_enable_count,
-        rssTodayAppendCount: r.data.today_rss_content_count
+        rssTodayAppendCount: r.data.today_rss_content_count,
+        rssCount: r.data.rss_count,
       };
       this.setState({
         quota: quota
@@ -150,17 +152,22 @@ class DashboardComp extends React.Component<IDashboardProps, IDashboardState> {
       <div>
         <Card className="row first-row">
           <Row>
-            <Col className="first-report-item fine" span={12}>
+            <Col className="first-report-item fine" span={8}>
               <span className="num">
                 {this.state.quota.rssTodayAppendCount}
               </span>
               <br />
               <span className="label">今日新增</span>
             </Col>
-            <Col className="first-report-item danger" span={12}>
+            <Col className="first-report-item danger" span={8}>
               <span className="num">{this.state.quota.rssEnableCount}</span>
               <br />
               <span className="label">我的源</span>
+            </Col>
+            <Col className="first-report-item warning" span={8}>
+              <span className="num">{this.state.quota.rssCount}</span>
+              <br />
+              <span className="label">总数</span>
             </Col>
           </Row>
         </Card>

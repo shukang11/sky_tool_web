@@ -21,19 +21,25 @@ const menus: Array<IMenuModel> = [
     component: "Dashboard"
   },
   {
-    key: "/app/tool",
-    title: "工具",
+    key: "/app/tool/todo",
+    title: "待办",
     icon: "robot",
+    component: "TodoComp"
+  },
+  {
+    key: "/app/rss",
+    icon: "robot",
+    title: "Rss",
     subs: [
       {
-        key: "/app/tool/todo",
-        title: "待办",
-        component: "TodoComp"
+        title: "订阅源",
+        key: "/app/rss/source",
+        component: "RssComp"
       },
       {
-        key: "/app/tool/rss",
-        title: "Rss订阅",
-        component: "RssComp"
+        title: "订阅列表",
+        key: "/app/rss/content",
+        component: "RssContent"
       }
     ]
   }
