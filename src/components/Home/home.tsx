@@ -16,8 +16,7 @@ interface IHomeProps {
   isMenuCollapsed: boolean;
 }
 
-interface IHomeState {
-}
+interface IHomeState {}
 class HomeComp extends React.Component<IHomeProps, IHomeState> {
   constructor(props: IHomeProps) {
     super(props);
@@ -42,9 +41,11 @@ class HomeComp extends React.Component<IHomeProps, IHomeState> {
     return (
       <Layout style={styles.BodyStyle}>
         <HomeSiderComp isMenuCollapsed={isMenuCollapsed} />
-        <Layout style={{
-              background: "#fff"
-        }}>
+        <Layout
+          style={{
+            background: "#fff"
+          }}
+        >
           <HomeHeaderComp />
           <Content
             style={{
@@ -102,7 +103,8 @@ const mapStateToProps = (state: { app: IAPPState }): IHomeProps => {
 };
 
 const mapDispatchToProps = dispatch => ({
-  toggleMenuCollapse: (isCollapsed: boolean) => dispatch(toggleCollapsedAction(isCollapsed))
+  toggleMenuCollapse: (isCollapsed: boolean) =>
+    dispatch(toggleCollapsedAction(isCollapsed))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomeComp);
