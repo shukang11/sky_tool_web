@@ -14,7 +14,7 @@ export async function rssSourceList(page: number, limit: number): Promise<any> {
 }
 
 export async function getRssContentList(page: number, limit: number): Promise<any> {
-    var path: string = "/rss/limit";
+    var path: string = "/rss/content/limit";
     var params: object = {token: getToken(), 'pages': page, 'limit': limit}
     return await request.get(`${BASE_URL}${path}`, {params})
 }
