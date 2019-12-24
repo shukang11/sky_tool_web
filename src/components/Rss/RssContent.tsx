@@ -1,6 +1,7 @@
 import * as React from "react";
-import { getRssContentList } from "src/services/rss";
+import { getRssContentList, readRssContent } from "src/services/rss";
 import { List, Button } from "antd";
+import { withRouter, RouteComponentProps } from 'react-router-dom';
 
 interface IRssContentModel {
   id: number;
@@ -10,9 +11,11 @@ interface IRssContentModel {
   description?: string;
   addTime?: number;
   fromSite: string;
+  isCollected?: boolean;
 }
 
-interface IRssContentProps {}
+interface IRssContentProps extends RouteComponentProps<any> {
+}
 
 interface IRssContentState {
   page: number;
@@ -44,7 +47,7 @@ class RssContentComp extends React.Component<
       if (!Array.isArray(r.data)) {
         return;
       }
-
+      
       var newArray: Array<IRssContentModel> = r.data.map(item => ({
         id: item.content_id,
         title: item.title,
@@ -52,16 +55,31 @@ class RssContentComp extends React.Component<
         image: item.hover_image,
         description: item.description,
         addTime: item.add_time,
-        fromSite: item.from_site
+        fromSite: item.from_site,
+        isCollected: item.isCollected,
       }));
       this.setState({
         list: this.state.list.concat(newArray),
         hasMore: newArray.length >= 11,
-        page: page,
+        page: page
       });
     });
   }
 
+  toggleContentCollect(item: IRssContentModel) {
+    
+  }
+
+  listItemActions(item: IRssContentModel): Array<React.ReactNode> {
+    return [
+      <Button onClick={() => {
+        readRssContent(item.id);
+      }}><a href={item.link} target="_blank" rel="noopener noreferrer">查看</a></Button>,
+    <Button onClick={(
+
+    ) => {}}>{item.isCollected ? "取消收藏" : "收藏"}</Button>
+    ];
+  }
   render() {
     const dataSource = this.state.list;
     return (
@@ -70,7 +88,7 @@ class RssContentComp extends React.Component<
           size="large"
           dataSource={dataSource}
           renderItem={item => (
-            <List.Item>
+            <List.Item actions={this.listItemActions(item)}>
               <List.Item.Meta
                 title={item.title}
                 description={item.fromSite}
@@ -98,4 +116,4 @@ class RssContentComp extends React.Component<
   }
 }
 
-export default RssContentComp;
+export default withRouter(RssContentComp);

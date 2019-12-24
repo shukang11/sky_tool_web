@@ -53,20 +53,18 @@ class RssComp extends React.Component<IRssProps, IRssState> {
         pages: 0,
         rsses: []
       })
-      this.fetchRssLimit();
+      this.fetchRssLimit(0);
     });
     this.setState({ isShowAddRssLink: false });
   };
 
-  fetchRssLimit() {
+  fetchRssLimit(page: number) {
     const { pages, limit } = this.state;
     rssSourceList(pages, limit).then(r => {
       if (!r || !r.data) {
         return;
       }
-      if (r.data.length === 0) {
-        return;
-      }
+      
       var append: Array<IRssModel> = r.data.map(
         (i: { rss_id: any; rss_link: any; rss_title: any }) => ({
           id: i.rss_id,
@@ -75,28 +73,26 @@ class RssComp extends React.Component<IRssProps, IRssState> {
           description: ""
         })
       );
-      if (append.length < this.state.limit) {
-        this.setState({ hasMore: false });
+      var source: Array<IRssModel> = this.state.rsses;
+      if (page == 0) {
+        source = [];
       }
       this.setState({
-        rsses: this.state.rsses.concat(append)
+        rsses: source.concat(append),
+        hasMore: append.length >= 11,
+        pages: page
       });
     });
   }
 
   componentDidMount() {
     if (this.state.rsses.length === 0) {
-      this.fetchRssLimit();
+      this.fetchRssLimit(0);
     }
   }
 
-  render() {
-    const {
-      form: { getFieldDecorator },
-    } = this.props;
-    const {rsses} = this.state;
-    
-    const ModalItem = (
+  modalComp(getFieldDecorator: any): React.ReactNode {
+    return (
       <Modal
         visible={this.state.isShowAddRssLink}
         onOk={() => {
@@ -122,6 +118,15 @@ class RssComp extends React.Component<IRssProps, IRssState> {
         </Form>
       </Modal>
     );
+  }
+
+  render() {
+    const {
+      form: { getFieldDecorator },
+    } = this.props;
+    const {rsses} = this.state;
+    
+    const ModalItem = this.modalComp(getFieldDecorator);
     if (!rsses || rsses.length == 0) {
       return (
         <div>
@@ -178,8 +183,7 @@ class RssComp extends React.Component<IRssProps, IRssState> {
               <div className="center-has-more">
                 <Button
                   onClick={() => {
-                    this.setState({ pages: this.state.pages + 1 });
-                    this.fetchRssLimit();
+                    this.fetchRssLimit(this.state.pages + 1);
                   }}
                 >
                   加载更多
