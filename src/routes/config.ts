@@ -28,7 +28,7 @@ const menus: Array<IMenuModel> = [
   },
   {
     key: "/app/rss",
-    icon: "robot",
+    icon: "switcher",
     title: "Rss",
     subs: [
       {
@@ -40,6 +40,18 @@ const menus: Array<IMenuModel> = [
         title: "订阅列表",
         key: "/app/rss/content",
         component: "RssContent"
+      }
+    ]
+  },
+  {
+    key: "/app/file",
+    icon: "file",
+    title: "文件管理",
+    subs: [
+      {
+        title: "文件上传",
+        key: "/app/file/upload",
+        component: "FileUploadComp"
       }
     ]
   }
