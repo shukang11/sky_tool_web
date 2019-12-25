@@ -91,7 +91,7 @@ class RssContentComp extends React.Component<
             <List.Item actions={this.listItemActions(item)}>
               <List.Item.Meta
                 title={item.title}
-                description={item.fromSite}
+                description={item.link}
               ></List.Item.Meta>
             </List.Item>
           )}
