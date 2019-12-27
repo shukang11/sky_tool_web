@@ -47,11 +47,6 @@ class HomeSiderComp extends React.Component<IHomeSiderProps, IHomeSiderState> {
   render() {
     return (
       <Sider trigger={null} collapsed={this.props.isMenuCollapsed} collapsible>
-        <Row className="side-icon">
-          <div className="img-wrap">
-            <span>Sky_tool</span>
-          </div>
-        </Row>
         <Menu theme="dark" mode="inline">
           {routesConfig.map(item =>
             item.subs ? this.renderMenuItem(item) : this.renderSubMenuItem(item)

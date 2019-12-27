@@ -7,7 +7,6 @@ import {RouteComponentProps} from "react-router";
 import { IUSERState as IUser, setTokenAction, setUserInfo } from "./../../reducers/user";
 import { getInfo } from "../../services/user";
 
-
 interface IHomeHeaderProps extends RouteComponentProps<any> {
   user: IUser;
   setTokenAction?: Function;

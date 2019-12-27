@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Layout } from "antd";
+import { Layout, Menu, Icon } from "antd";
 import { Route } from "react-router";
 import { connect } from "react-redux";
 
@@ -8,9 +8,12 @@ import routesConfig from "../../routes/config";
 
 import HomeSiderComp from "./HomeSider";
 import HomeHeaderComp from "./HomeHeader";
-const { Content } = Layout;
 import { IMenuItem, IMenuModel } from "./../../routes/config";
 import { IAPPState, toggleCollapsedAction } from "src/reducers/app";
+import "./home.scss";
+
+const { Header, Content, Footer, Sider } = Layout;
+const { SubMenu } = Menu;
 
 interface IHomeProps {
   isMenuCollapsed: boolean;
@@ -39,22 +42,11 @@ class HomeComp extends React.Component<IHomeProps, IHomeState> {
     const { isMenuCollapsed } = this.props;
 
     return (
-      <Layout style={styles.BodyStyle}>
-        <HomeSiderComp isMenuCollapsed={isMenuCollapsed} />
-        <Layout
-          style={{
-            background: "#fff"
-          }}
-        >
-          <HomeHeaderComp />
-          <Content
-            style={{
-              background: "#fff",
-              height: "100%",
-              overflow: "initial",
-              padding: "1rem"
-            }}
-          >
+      <Layout className="root-container">
+        <HomeHeaderComp></HomeHeaderComp>
+        <Layout className="payload-container">
+          <HomeSiderComp isMenuCollapsed={isMenuCollapsed} />
+          <Content className="body-container">
             {routesConfig.map(item =>
               item.subs
                 ? this.renderSubRouteItem(item)
@@ -66,35 +58,6 @@ class HomeComp extends React.Component<IHomeProps, IHomeState> {
     );
   }
 }
-
-const styles = {
-  BodyStyle: {
-    height: "100%",
-    width: "100%",
-    minHeight: "100%"
-  },
-  TriggerStyle: {
-    fontSize: "1.3rem",
-    lineHeight: "3rem",
-    padding: "0 1rem",
-    cursor: "pointer",
-    transition: "color .3s"
-  },
-  UserIconStyle: {
-    marginRight: "1.3rem",
-    lineHeight: "3rem",
-    padding: "0 1rem",
-    cursor: "pointer"
-  },
-  LogoStyle: {
-    height: "2rem",
-    background: "rgba(255, 255, 255, .2)",
-    margin: "1rem"
-  },
-  FooterStyle: {
-    textAlign: "center"
-  }
-};
 
 const mapStateToProps = (state: { app: IAPPState }): IHomeProps => {
   return {

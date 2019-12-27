@@ -1,6 +1,7 @@
 .header-container {
   height: 64px;
   line-height: 64px;
+  background-color: green($color: #000000);
   .header {
     .right {
       float: right;

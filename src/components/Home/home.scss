@@ -1,0 +1,19 @@
+.root-container {
+    min-height: 100vh;
+    // max-height: 100vh;
+
+    .header-container {
+        min-height: 10pt;
+    }
+
+    .payload-container {/* 主要显示内容的样式 包含了侧滑栏 */
+    }
+    
+    .body-container {
+        margin: 10pt;
+    }
+
+    .footer-container {
+        text-align: center;
+    }
+}
