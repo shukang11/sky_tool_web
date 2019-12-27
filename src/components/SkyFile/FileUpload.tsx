@@ -5,6 +5,7 @@ import { BASE_URL, getToken } from "src/utils/config";
 import { UploadFile, UploadProps } from "antd/lib/upload/interface";
 import { upload, getFileList as fetchFileList } from "src/services/upload";
 import { getDateStringFromTimestrap } from "src/utils/helper";
+import * as InfiniteScroll from "react-infinite-scroller";
 
 const { Dragger } = Upload;
 
@@ -23,6 +24,7 @@ interface IFileUploadState {
   page: number;
   limit: number;
   fileList: Array<IFileModel>;
+  hasMore: boolean;
 }
 
 interface IFileUploadProps {}
@@ -36,10 +38,11 @@ class FileUploadComp extends React.Component<
     prepareUploadingFileList: [],
     isUploading: false,
     page: 0,
-    limit: 11
+    limit: 11,
+    hasMore: true
   };
   componentDidMount() {
-    this.getFileList(this.state.page)
+    this.getFileList(this.state.page);
   }
 
   getFileList = (page: number) => {
@@ -47,15 +50,19 @@ class FileUploadComp extends React.Component<
       if (!r || !r.data) {
         return;
       }
-      var append: Array<IFileModel> = r.data.map(item=>({
+      var append: Array<IFileModel> = r.data.map(item => ({
         file_id: item.file_id,
         create_time: item.create_time,
         file_name: item.file_name,
         file_type: item.file_type,
         file_state: item.file_state,
-        file_url: item.file_url,
-      }))
-      this.setState({fileList: this.state.fileList.concat(append)})
+        file_url: item.file_url
+      }));
+      this.setState({
+        page: page,
+        fileList: this.state.fileList.concat(append),
+        hasMore: append.length >= 11
+      });
     });
   };
 
@@ -118,20 +125,40 @@ class FileUploadComp extends React.Component<
             {isUploading ? "Uploading" : "Start Upload"}
           </Button>
         </Card>
-        <Card style={{marginTop: 10}}>
-          <List
-          size="large"
-          dataSource={this.state.fileList}
-          renderItem={item=>(
-            <List.Item>
-              <List.Item.Meta
-              avatar={<Avatar size="large" src={`${BASE_URL}${item.file_url}`}></Avatar>}
-              title={item.file_name}
-              description={<p> 上传于 {getDateStringFromTimestrap(item.create_time)} </p>}
-              ></List.Item.Meta>
-            </List.Item>
-          )}
-          ></List>
+        <Card style={{ marginTop: 10 }}>
+          <InfiniteScroll
+            pageStart={0}
+            hasMore={this.state.hasMore}
+            loadMore={() => {
+              this.getFileList(this.state.page + 1);
+            }}
+          >
+            <List
+              size="large"
+              dataSource={this.state.fileList}
+              renderItem={item => (
+                <List.Item>
+                  <List.Item.Meta
+                    avatar={
+                      <Avatar
+                        size="large"
+                        src={`${BASE_URL}${item.file_url}`}
+                      ></Avatar>
+                    }
+                    title={item.file_name}
+                    description={
+                      <p>
+                        {" "}
+                        上传于 {getDateStringFromTimestrap(
+                          item.create_time
+                        )}{" "}
+                      </p>
+                    }
+                  ></List.Item.Meta>
+                </List.Item>
+              )}
+            ></List>
+          </InfiniteScroll>
         </Card>
       </div>
     );
