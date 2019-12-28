@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Layout, Menu, Icon } from "antd";
+import { Layout, Menu, Icon, BackTop } from "antd";
 import { Route } from "react-router";
 import { connect } from "react-redux";
 
@@ -45,6 +45,7 @@ class HomeComp extends React.Component<IHomeProps, IHomeState> {
       <Layout className="root-container">
         <HomeHeaderComp></HomeHeaderComp>
         <Layout className="payload-container">
+          <BackTop />
           <HomeSiderComp isMenuCollapsed={isMenuCollapsed} />
           <Content className="body-container">
             {routesConfig.map(item =>

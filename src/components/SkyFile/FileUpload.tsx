@@ -1,5 +1,4 @@
 import * as React from "react";
-import { connect } from "react-redux";
 import { Upload, Icon, Avatar, Button, List, Card } from "antd";
 import { BASE_URL, getToken } from "src/utils/config";
 import { UploadFile, UploadProps } from "antd/lib/upload/interface";

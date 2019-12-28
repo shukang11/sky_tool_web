@@ -1,15 +1,16 @@
 import * as React from "react";
 import { getRssContentList, readRssContent } from "src/services/rss";
-import { List, Button, Spin } from "antd";
+import { List, Button, Spin, Card } from "antd";
 import { withRouter, RouteComponentProps } from "react-router-dom";
 import * as InfiniteScroll from "react-infinite-scroller";
+import { getDateStringFromTimestrap } from "src/utils/helper";
 interface IRssContentModel {
   id: number;
   title: string;
   link: string;
   image?: string;
   description?: string;
-  addTime?: number;
+  addTime?: string;
   fromSite: string;
   isCollected?: boolean;
 }
@@ -65,6 +66,18 @@ class RssContentComp extends React.Component<
     });
   }
 
+  renderContentCard(item: IRssContentModel): React.ReactNode {
+    return (
+      <Card
+        hoverable
+        cover={item.image ? <a href={item.image} /> : null}
+        actions={this.listItemActions(item)}
+      >
+        <Card.Meta title={item.title} description={item.addTime}></Card.Meta>
+      </Card>
+    );
+  }
+
   toggleContentCollect(item: IRssContentModel) {}
 
   listItemActions(item: IRssContentModel): Array<React.ReactNode> {
@@ -95,24 +108,15 @@ class RssContentComp extends React.Component<
           }}
         >
           <List
-            size="large"
+            grid={{ gutter: 16, column: 2 }}
+            itemLayout="horizontal"
             dataSource={dataSource}
             renderItem={item => (
-              <List.Item actions={this.listItemActions(item)}>
-                <List.Item.Meta
-                key={item.id}
-                  title={item.title}
-                  description={item.fromSite}
-                ></List.Item.Meta>
+              <List.Item /*actions={this.listItemActions(item)}*/>
+                {this.renderContentCard(item)}
               </List.Item>
             )}
-            loadMore={
-              this.state.hasMore ? (
-                <Spin></Spin>
-              ) : (
-                <div></div>
-              )
-            }
+            loadMore={this.state.hasMore ? <Spin></Spin> : <div></div>}
           ></List>
         </InfiniteScroll>
       </div>

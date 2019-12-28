@@ -11,7 +11,5 @@ export function getDateStringFromTimestrap(time: string): string {
     const m = date.getMinutes() + ':';
     const s = date.getSeconds(); 
     result = Y+M+D+h+m+s;
-    console.log(result);
-    console.log(time);
     return result;
 }
