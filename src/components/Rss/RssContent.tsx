@@ -1,9 +1,10 @@
 import * as React from "react";
 import { getRssContentList, readRssContent } from "src/services/rss";
-import { List, Button, Spin, Card } from "antd";
+import { List, Button, Spin, Card, Dropdown, Menu, Row, Col } from "antd";
 import { withRouter, RouteComponentProps } from "react-router-dom";
 import * as InfiniteScroll from "react-infinite-scroller";
-import { getDateStringFromTimestrap } from "src/utils/helper";
+import "./RssContent.scss";
+
 interface IRssContentModel {
   id: number;
   title: string;
@@ -13,6 +14,8 @@ interface IRssContentModel {
   addTime?: string;
   fromSite: string;
   isCollected?: boolean;
+  rateValue?: number;
+  noRate: boolean;
 }
 
 interface IRssContentProps extends RouteComponentProps<any> {}
@@ -56,7 +59,9 @@ class RssContentComp extends React.Component<
         description: item.description,
         addTime: item.add_time,
         fromSite: item.from_site,
-        isCollected: item.isCollected
+        isCollected: item.isCollected,
+        rateValue: item.rate_value,
+        noRate: item.is_no_rate
       }));
       this.setState({
         list: this.state.list.concat(newArray),
@@ -79,6 +84,10 @@ class RssContentComp extends React.Component<
   }
 
   toggleContentCollect(item: IRssContentModel) {}
+
+  setItemRateValue(item: IRssContentModel, rateValue: number) {
+    
+  }
 
   listItemActions(item: IRssContentModel): Array<React.ReactNode> {
     return [

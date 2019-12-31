@@ -73,11 +73,11 @@ class FileUploadComp extends React.Component<
     });
     this.setState({ isUploading: true });
     upload(formData).then(r => {
+      var isUploading: boolean = false;
       if (!r || !r.data) {
-        return;
+        isUploading = true;
       }
-      console.log(r);
-      this.setState({ prepareUploadingFileList: [], isUploading: false });
+      this.setState({ prepareUploadingFileList: [], isUploading: isUploading });
     });
   };
 
@@ -121,7 +121,7 @@ class FileUploadComp extends React.Component<
             loading={isUploading}
             style={{ marginTop: 16, float: "right" }}
           >
-            {isUploading ? "Uploading" : "Start Upload"}
+            {isUploading ? "上传中" : "开始上传"}
           </Button>
         </Card>
         <Card style={{ marginTop: 10 }}>
