@@ -31,10 +31,10 @@ class HomeSiderComp extends React.Component<IHomeSiderProps, IHomeSiderState> {
         </Item>
       );
     }
-    return <div></div>;
+    return <div key={item.path.concat('-empty-block')}></div>;
   }
   renderMenuSubMenu(item: IMenuModel): React.ReactNode {
-    if (!item.subMenu) {
+    if (!item.subMenu || item.subMenu.length === 0) {
       var renderItem: IMenuItem = {
         key: item.key,
         path: item.path,
@@ -45,8 +45,6 @@ class HomeSiderComp extends React.Component<IHomeSiderProps, IHomeSiderState> {
       };
       return this.renderMenuItem(renderItem);
     }
-    console.log(item.key ? item.key : item.path);
-
     return (
       <SubMenu
         key={item.key ? item.key : item.path}

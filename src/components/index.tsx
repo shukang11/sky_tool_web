@@ -6,7 +6,8 @@ import FileUploadComp from './SkyFile/FileUpload';
 
 import { BlogComp } from './Blog/blog';
 import { BlogBackendComp } from './Blog/backend';
-import { BlogEditComp } from './Blog/blogedit';
+import { BlogEdit as BlogEditComp } from './Blog/blogedit';
+import { BlogPreviewComp } from './Blog/blogpreview';
 
 export default {
     TodoComp,
@@ -17,4 +18,5 @@ export default {
     BlogComp,
     BlogBackendComp,
     BlogEditComp,
+    BlogPreviewComp,
 };

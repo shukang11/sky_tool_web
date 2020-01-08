@@ -32,7 +32,7 @@ const menus: Array<IMenuModel> = [
   {
     path: "/app/rss",
     icon: "switcher",
-    title: "Rss",
+    title: "订阅",
     subMenu: [
       {
         title: "订阅源",
@@ -67,22 +67,28 @@ const menus: Array<IMenuModel> = [
     title: "博客",
     subMenu: [
       {
+        path: "/app/blog/backend",
         title: "后台",
         display: true,
-        path: "/app/blog/backend",
         component: "BlogBackendComp"
       },
       {
+        path: "/app/blog/frontend",
         title: "前台",
         display: true,
-        path: "/app/blog/frontend",
         component: "BlogComp"
       },
       {
+        path: "/app/blog/edit",
         title: "编辑单个博客",
         display: false,
-        path: "/app/blog/edit",
         component: "BlogEditComp"
+      },
+      {
+        path: "/app/blog/preview",
+        title: "博客预览",
+        display: false,
+        component: "BlogPreviewComp"
       }
     ]
   }
