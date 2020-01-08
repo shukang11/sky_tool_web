@@ -7,6 +7,7 @@ import { IMenuItem, IMenuModel } from "./../../routes/config";
 import "./HomeSider.scss";
 
 const { Sider } = Layout;
+const { Item, SubMenu } = Menu;
 
 interface IHomeSiderProps {
   isMenuCollapsed: boolean;
@@ -19,20 +20,36 @@ class HomeSiderComp extends React.Component<IHomeSiderProps, IHomeSiderState> {
     super(props);
   }
 
-  renderSubMenuItem(item: IMenuItem) {
-    return (
-      <Menu.Item key={item.key}>
-        <Link to={item.key}>
-          {item.icon && <Icon type={item.icon} />}
-          <span>{item.title}</span>
-        </Link>
-      </Menu.Item>
-    );
+  renderMenuItem(item: IMenuItem): React.ReactNode {
+    if (item.display) {
+      return (
+        <Item key={item.key ? item.key : item.path}>
+          <Link to={item.path}>
+            {item.icon && <Icon type={item.icon} />}
+            <span>{item.title}</span>
+          </Link>
+        </Item>
+      );
+    }
+    return <div></div>;
   }
-  renderMenuItem(item: IMenuModel) {
+  renderMenuSubMenu(item: IMenuModel): React.ReactNode {
+    if (!item.subMenu) {
+      var renderItem: IMenuItem = {
+        key: item.key,
+        path: item.path,
+        display: true,
+        title: item.title,
+        icon: item.icon,
+        component: item.component
+      };
+      return this.renderMenuItem(renderItem);
+    }
+    console.log(item.key ? item.key : item.path);
+
     return (
-      <Menu.SubMenu
-        key={item.key}
+      <SubMenu
+        key={item.key ? item.key : item.path}
         title={
           <span>
             {item.icon && <Icon type={item.icon} />}
@@ -40,17 +57,17 @@ class HomeSiderComp extends React.Component<IHomeSiderProps, IHomeSiderState> {
           </span>
         }
       >
-        {item.subs.map(item => this.renderSubMenuItem(item))}
-      </Menu.SubMenu>
+        {item.subMenu.map(item => this.renderMenuItem(item))}
+      </SubMenu>
     );
   }
   render() {
     return (
       <Sider trigger={null} collapsed={this.props.isMenuCollapsed} collapsible>
         <Menu theme="dark" mode="inline">
-          {routesConfig.map(item =>
-            item.subs ? this.renderMenuItem(item) : this.renderSubMenuItem(item)
-          )}
+          {routesConfig.map(item => {
+            return this.renderMenuSubMenu(item);
+          })}
         </Menu>
       </Sider>
     );

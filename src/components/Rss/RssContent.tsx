@@ -1,6 +1,6 @@
 import * as React from "react";
-import { getRssContentList, readRssContent } from "src/services/rss";
-import { List, Button, Spin, Card, Dropdown, Menu, Row, Col } from "antd";
+import { getRssContentList, readRssContent, toggleRssContentCollect } from "src/services/rss";
+import { List, Button, Spin, Card, Dropdown, Menu, Row, Col, message } from "antd";
 import { withRouter, RouteComponentProps } from "react-router-dom";
 import * as InfiniteScroll from "react-infinite-scroller";
 import "./RssContent.scss";
@@ -50,7 +50,8 @@ class RssContentComp extends React.Component<
       if (!Array.isArray(r.data)) {
         return;
       }
-
+      console.log(r.data);
+      
       var newArray: Array<IRssContentModel> = r.data.map(item => ({
         id: item.content_id,
         title: item.title,
@@ -63,8 +64,12 @@ class RssContentComp extends React.Component<
         rateValue: item.rate_value,
         noRate: item.is_no_rate
       }));
+      var originArray: Array<IRssContentModel> = this.state.list;
+      if (page === 0) {
+        originArray = [];
+      }
       this.setState({
-        list: this.state.list.concat(newArray),
+        list: originArray.concat(newArray),
         hasMore: newArray.length >= 11,
         page: page
       });
@@ -83,7 +88,15 @@ class RssContentComp extends React.Component<
     );
   }
 
-  toggleContentCollect(item: IRssContentModel) {}
+  toggleContentCollect(item: IRssContentModel) {
+    toggleRssContentCollect(item.id).then(r=> {
+      if (!r || !r.data) {
+        return;
+      }
+      message.success(r.msg);
+      this.fetchRssContentList(0);
+    });
+  }
 
   setItemRateValue(item: IRssContentModel, rateValue: number) {
     
@@ -100,7 +113,9 @@ class RssContentComp extends React.Component<
           查看
         </a>
       </Button>,
-      <Button onClick={() => {}}>
+      <Button onClick={() => {
+        this.toggleContentCollect(item);
+      }}>
         {item.isCollected ? "取消收藏" : "收藏"}
       </Button>
     ];

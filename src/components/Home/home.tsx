@@ -24,19 +24,29 @@ class HomeComp extends React.Component<IHomeProps, IHomeState> {
   constructor(props: IHomeProps) {
     super(props);
   }
-  renderRouteItem(item: IMenuItem) {
+  renderRouteSubItem(item: IMenuItem): React.ReactNode {
     return (
       <Route
-        key={item.key}
+        key={item.key ? item.key : item.path}
         exact
-        path={item.key}
+        path={item.path}
         component={allComponents[item.component]}
       />
     );
   }
 
-  renderSubRouteItem(item: IMenuModel) {
-    return item.subs.map(r => this.renderRouteItem(r));
+  renderRouteRootMenu(item: IMenuModel): React.ReactNode | Array<React.ReactNode> {
+    if (!item.subMenu) {
+      var renderItem: IMenuItem = {
+        key: item.key,
+        path: item.path,
+        display: true,
+        title: item.title,
+        component: item.component
+      }
+      return this.renderRouteSubItem(renderItem)
+    }
+    return item.subMenu.map(i => this.renderRouteSubItem(i))
   }
   render() {
     const { isMenuCollapsed } = this.props;
@@ -48,11 +58,9 @@ class HomeComp extends React.Component<IHomeProps, IHomeState> {
           <BackTop />
           <HomeSiderComp isMenuCollapsed={isMenuCollapsed} />
           <Content className="body-container">
-            {routesConfig.map(item =>
-              item.subs
-                ? this.renderSubRouteItem(item)
-                : this.renderRouteItem(item)
-            )}
+            {routesConfig.map(item => {
+              return this.renderRouteRootMenu(item)
+            })}
           </Content>
         </Layout>
       </Layout>

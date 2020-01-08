@@ -1,13 +1,16 @@
 export declare interface IMenuModel {
-  key: string;
+  key?: string;
+  path: string;
   title: string;
   icon: string;
-  subs?: Array<IMenuItem>;
+  subMenu?: Array<IMenuItem>;
   component?: string;
 }
 
 export declare interface IMenuItem {
-  key: string;
+  key?: string;
+  path: string;
+  display: boolean;
   title: string;
   icon?: string;
   component?: string;
@@ -15,43 +18,71 @@ export declare interface IMenuItem {
 
 const menus: Array<IMenuModel> = [
   {
-    key: "/app/dashboard",
+    path: "/app/dashboard",
     title: "看板",
     icon: "pie-chart",
     component: "Dashboard"
   },
   {
-    key: "/app/tool/todo",
+    path: "/app/tool/todo",
     title: "待办",
     icon: "robot",
     component: "TodoComp"
   },
   {
-    key: "/app/rss",
+    path: "/app/rss",
     icon: "switcher",
     title: "Rss",
-    subs: [
+    subMenu: [
       {
         title: "订阅源",
-        key: "/app/rss/source",
+        display: true,
+        path: "/app/rss/source",
         component: "RssComp"
       },
       {
         title: "订阅列表",
-        key: "/app/rss/content",
+        display: true,
+        path: "/app/rss/content",
         component: "RssContent"
       }
     ]
   },
   {
-    key: "/app/file",
+    path: "/app/file",
     icon: "file",
     title: "文件管理",
-    subs: [
+    subMenu: [
       {
         title: "文件上传",
-        key: "/app/file/upload",
+        display: true,
+        path: "/app/file/upload",
         component: "FileUploadComp"
+      }
+    ]
+  },
+  {
+    path: "/app/blog",
+    icon: "medium",
+    title: "博客",
+    subMenu: [
+      {
+        title: "后台",
+        display: true,
+        path: "/app/blog/backend",
+        component: "BlogBackendComp"
+      },
+      {
+        title: "前台",
+        display: true,
+        path: "/app/blog/frontend",
+        component: "BlogComp"
+      },
+      {
+        title: "编辑单个博客",
+        display: false,
+        path: "/app/blog/edit",
+        component: "BlogEditComp"
       }
     ]
   }
