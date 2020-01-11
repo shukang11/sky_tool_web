@@ -2,7 +2,7 @@ import * as React from "react";
 import ReactEcharts from "echarts-for-react";
 import { connect } from "react-redux";
 import { Row, Col, Card, message } from "antd";
-import { dashboardInfo as getDashBoardInfo } from "../../../services/dashboard";
+import { dashboardInfo as getDashBoardInfo } from "../services"
 import "../styles/dashboard.scss";
 
 declare interface IQuotaModel {

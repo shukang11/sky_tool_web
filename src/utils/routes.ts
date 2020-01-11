@@ -21,7 +21,7 @@ const menus: Array<IMenuModel> = [
     path: "/app/dashboard",
     title: "看板",
     icon: "pie-chart",
-    component: "Dashboard"
+    component: "DashboardComp"
   },
   {
     path: "/app/tool/todo",
