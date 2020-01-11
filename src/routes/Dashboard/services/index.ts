@@ -1,5 +1,5 @@
-import { BASE_URL } from "./../utils/config";
-import request from "../utils/request";
+import request from '../../../utils/request';
+import { BASE_URL } from "../../../utils/config";
 
 export async function dashboardInfo(): Promise<any> {
     var path: string = "/dashboard/info";

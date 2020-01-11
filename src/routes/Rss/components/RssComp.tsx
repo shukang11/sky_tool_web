@@ -1,8 +1,19 @@
 import * as React from "react";
 import { connect } from "react-redux";
-import { Button, List, message, Empty, Modal, Form, Input } from "antd";
-import { rssSourceList, addRssLink } from "./../../services/rss";
-import "./RssComp.scss";
+import {
+  Button,
+  List,
+  message,
+  Empty,
+  Modal,
+  Form,
+  Input,
+  Spin,
+  Card
+} from "antd";
+import { rssSourceList, addRssLink } from "../../../services/rss";
+import * as InfiniteScroll from "react-infinite-scroller";
+import "../styles/RssComp.scss";
 
 const FormItem = Form.Item;
 
@@ -29,7 +40,7 @@ class RssComp extends React.Component<IRssProps, IRssState> {
     rsses: [],
     isShowAddRssLink: false,
     pages: 0,
-    limit: 11,
+    limit: 22,
     hasMore: true
   };
   /* 点击显示对话框 */
@@ -52,19 +63,19 @@ class RssComp extends React.Component<IRssProps, IRssState> {
       this.setState({
         pages: 0,
         rsses: []
-      })
+      });
       this.fetchRssLimit(0);
     });
     this.setState({ isShowAddRssLink: false });
   };
 
   fetchRssLimit(page: number) {
-    const { pages, limit } = this.state;
-    rssSourceList(pages, limit).then(r => {
+    const { limit } = this.state;
+    rssSourceList(page, limit).then(r => {
       if (!r || !r.data) {
         return;
       }
-      
+
       var append: Array<IRssModel> = r.data.map(
         (i: { rss_id: any; rss_link: any; rss_title: any }) => ({
           id: i.rss_id,
@@ -122,10 +133,10 @@ class RssComp extends React.Component<IRssProps, IRssState> {
 
   render() {
     const {
-      form: { getFieldDecorator },
+      form: { getFieldDecorator }
     } = this.props;
-    const {rsses} = this.state;
-    
+    const { rsses } = this.state;
+
     const ModalItem = this.modalComp(getFieldDecorator);
     if (!rsses || rsses.length == 0) {
       return (
@@ -155,49 +166,55 @@ class RssComp extends React.Component<IRssProps, IRssState> {
     const data = rsses;
     return (
       <div>
-        <List
-          header={
-            <div className="center-has-more">
-              <Button
-                type="primary"
-                onClick={() => {
-                  this.onWantCreateRssLinkClicked();
-                }}
-              >
-                创建一个
-              </Button>
-            </div>
-          }
-          itemLayout="horizontal"
-          dataSource={data}
-          renderItem={item => (
-            <List.Item>
-              <List.Item.Meta
-                title={item.title}
-                description={item.link}
-              ></List.Item.Meta>
-            </List.Item>
-          )}
-          loadMore={
-            this.state.hasMore ? (
+        <InfiniteScroll
+          pageStart={0}
+          hasMore={this.state.hasMore}
+          loadMore={() => {
+            this.fetchRssLimit(this.state.pages + 1);
+          }}
+        >
+          <List
+            grid={{ gutter: 16, column: 3 }}
+            header={
               <div className="center-has-more">
                 <Button
+                  type="primary"
                   onClick={() => {
-                    this.fetchRssLimit(this.state.pages + 1);
+                    this.onWantCreateRssLinkClicked();
                   }}
                 >
-                  加载更多
+                  创建一个
                 </Button>
               </div>
-            ) : (
-              <div></div>
-            )
-          }
-        ></List>
+            }
+            itemLayout="horizontal"
+            dataSource={data}
+            renderItem={item => (
+              <List.Item>
+                <Card title={item.title ? item.title : item.link}>
+                  <a href={item.link}>{item.link}</a>
+                </Card>
+              </List.Item>
+            )}
+            loadMore={
+              this.state.hasMore ? (
+                <div className="center-has-more">
+                  <Spin></Spin>
+                </div>
+              ) : (
+                <div></div>
+              )
+            }
+          ></List>
+        </InfiniteScroll>
+
         {ModalItem}
       </div>
     );
   }
 }
 
-export default connect()(Form.create<IRssProps>()(RssComp));
+const Rss = connect()(Form.create<IRssProps>()(RssComp));
+export {
+  Rss
+};

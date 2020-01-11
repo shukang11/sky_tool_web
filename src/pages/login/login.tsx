@@ -32,95 +32,96 @@ class LoginComp extends React.Component<ILoginProps, ILoginState> {
 
   onLoginClicked() {
     const values = this.props.form.getFieldsValue();
-    const {name, password} = values;
-    if (!name || !password) { return; }
+    const { name, password } = values;
+    if (!name || !password) {
+      return;
+    }
     login(name, password).then(r => {
-      if (!r || !r.data) { return}
-      localStorage.setItem('token', r.data.token)
-      this.props.history.push('/app/dashboard')
-    })
+      if (!r || !r.data) {
+        return;
+      }
+      localStorage.setItem("token", r.data.token);
+      this.props.history.push("/app/dashboard");
+    });
   }
 
   onRegisterClicked() {
     const values = this.props.form.getFieldsValue();
-    const {name, password} = values;
-    if (!name || !password) { return; }
+    const { name, password } = values;
+    if (!name || !password) {
+      return;
+    }
     register(name, password).then(r => {
-      if (!r || !r.data) { return}
-      this.onLoginClicked()
-    })
+      if (!r || !r.data) {
+        return;
+      }
+      this.onLoginClicked();
+    });
   }
 
   render() {
     const {
       form: { getFieldDecorator }
     } = this.props;
-    const space = 7;
-    const contentWidth = 24 - space * 2;
     return (
-      <div className="container">
-        <Row className='form-wrap'>
-          <Col span={space}></Col>
-          <Col span={contentWidth}>
-          <Form>
-            <FormItem>
-              {getFieldDecorator("name", {
-                rules: [
-                  {
-                    required: true,
-                    message: "please inpput your name"
-                  },
-                  {
-                    min: 5,
-                    max: 18,
-                    message: "请输入5-18位字符"
-                  }
-                ]
-              })(<Input placeholder="请输入用户名" />)}
-            </FormItem>
-            <FormItem>
-              {getFieldDecorator("password", {
-                rules: [
-                  {
-                    required: true,
-                    message: "please input your password"
-                  }
-                ]
-              })(<Input.Password placeholder="密码" required={true} />)}
-            </FormItem>
-            <Row>
-              <Col span={12}>
-                <FormItem>
-                  <Button
-                    type="primary"
-                    htmlType="submit"
-                    onClick={() => {
-                      this.onLoginClicked();
-                    }}
-                  >
-                    登录
-                  </Button>
-                </FormItem>
-              </Col>
-
-              <Col span={12}>
-                <FormItem className='form-register'>
-                  <Button
-                    type='primary'
-                    htmlType="button"
-                    onClick={() => {
-                      this.onRegisterClicked();
-                    }}
-                  >
-                    注册
-                  </Button>
-                </FormItem>
-              </Col>
-            </Row>
-          </Form>
-          </Col>
-          <Col span={space}></Col>
-        </Row>
+      <div>
+      <Card bordered={false} className="container">
+        <Form className="form-wrap">
+          <FormItem>
+            {getFieldDecorator("name", {
+              rules: [
+                {
+                  required: true,
+                  message: "please inpput your name"
+                },
+                {
+                  min: 5,
+                  max: 18,
+                  message: "请输入5-18位字符"
+                }
+              ]
+            })(<Input placeholder="请输入用户名" />)}
+          </FormItem>
+          <FormItem>
+            {getFieldDecorator("password", {
+              rules: [
+                {
+                  required: true,
+                  message: "please input your password"
+                }
+              ]
+            })(<Input.Password placeholder="密码" required={true} />)}
+          </FormItem>
+          <Row>
+            <Col span={12}>
+              <FormItem>
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  onClick={() => {
+                    this.onLoginClicked();
+                  }}
+                >
+                  登录
+                </Button>
+              </FormItem>
+            </Col>
+            <Col>
+              <FormItem className="form-register">
+                <Button
+                  type="primary"
+                  htmlType="button"
+                  onClick={() => {
+                    this.onRegisterClicked();
+                  }}
+                >
+                  注册
+                </Button>
+              </FormItem>
+            </Col>
+          </Row>
+        </Form>
+      </Card>
       </div>
     );
   }
