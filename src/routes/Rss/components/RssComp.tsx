@@ -11,9 +11,9 @@ import {
   Spin,
   Card
 } from "antd";
-import { rssSourceList, addRssLink } from "./../../services/rss";
+import { rssSourceList, addRssLink } from "../../../services/rss";
 import * as InfiniteScroll from "react-infinite-scroller";
-import "./RssComp.scss";
+import "../styles/RssComp.scss";
 
 const FormItem = Form.Item;
 
@@ -214,4 +214,7 @@ class RssComp extends React.Component<IRssProps, IRssState> {
   }
 }
 
-export default connect()(Form.create<IRssProps>()(RssComp));
+const Rss = connect()(Form.create<IRssProps>()(RssComp));
+export {
+  Rss
+};

@@ -6,3 +6,4 @@ export const BASE_URL = 'http://0.0.0.0:9000';
 export function getToken(): string {
     return localStorage.getItem('token')
 }
+

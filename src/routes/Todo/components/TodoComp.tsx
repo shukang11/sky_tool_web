@@ -1,16 +1,21 @@
 import * as React from "react";
-import PageLoading from "../PageLoading/index";
+import PageLoading from "../../../common/PageLoading";
 import {
   ITodoModel,
   ITodo,
   set_todos_action,
   FilterStyle
-} from "../../reducers/todo";
-import { filterTodo, addTodo, finishTodo, undoTodo } from "../../services/todo";
+} from "../../../reducers/todo";
+import {
+  filterTodo,
+  addTodo,
+  finishTodo,
+  undoTodo
+} from "../../../services/todo";
 import { connect } from "react-redux";
 import { Button, message, Empty, Table, Input, Row, Col } from "antd";
 
-import "./todo.css";
+import "../style/todo.css";
 
 interface ITodoProps {
   todos: Array<ITodoModel>;
@@ -137,14 +142,14 @@ class TodoComp extends React.Component<ITodoProps, ITodoState> {
         title: "状态",
         dataIndex: "status",
         key: "status",
-        render: (e:  number) => {
-          var content: string = ""
+        render: (e: number) => {
+          var content: string = "";
           if (e === 1) {
-            content = "待完成"
+            content = "待完成";
           } else if (e === 2) {
-            content = "已完成"
+            content = "已完成";
           }
-          return (<div>{content}</div>)
+          return <div>{content}</div>;
         }
       },
       {
@@ -243,7 +248,5 @@ const mapDispatchToProps = dispatch => ({
     dispatch(set_todos_action(todos))
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(TodoComp);
+const Todo = connect(mapStateToProps, mapDispatchToProps)(TodoComp);
+export { Todo };

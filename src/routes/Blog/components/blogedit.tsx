@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Input, Card, Button } from "antd";
 import { withRouter, RouteComponentProps } from 'react-router-dom';
-import "./blog.scss";
+import "../styles/blog.scss";
 
 interface IBlogState {
   source: string;

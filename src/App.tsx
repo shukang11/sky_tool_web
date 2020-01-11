@@ -12,7 +12,7 @@ import { Provider } from "react-redux";
 import logger from "redux-logger";
 
 import LoginComp from "./pages/login/login";
-import HomeComp from "./components/Home/home";
+import {Home} from "./pages/Home";
 
 const store = createStore(rootReducers, applyMiddleware(logger));
 class App extends React.Component {
@@ -34,7 +34,7 @@ class App extends React.Component {
               }
             />
             <Route path="/login" component={LoginComp}></Route>
-            <Route path="/app" component={HomeComp}></Route>
+            <Route path="/app" component={Home}></Route>
           </Switch>
         </Router>
       </Provider>

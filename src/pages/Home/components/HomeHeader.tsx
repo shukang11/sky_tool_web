@@ -1,11 +1,11 @@
 import * as React from "react";
 import { Avatar, Button, Row, Col } from "antd";
-import "./HomeHeader.scss";
+import "../styles/HomeHeader.scss";
 import { withRouter } from 'react-router-dom';
 import { connect } from "react-redux";
 import {RouteComponentProps} from "react-router";
-import { IUSERState as IUser, setTokenAction, setUserInfo } from "./../../reducers/user";
-import { getInfo } from "../../services/user";
+import { IUSERState as IUser, setTokenAction, setUserInfo } from "../../../reducers/user";
+import { getInfo } from "../../../services/user";
 
 interface IHomeHeaderProps extends RouteComponentProps<any> {
   user: IUser;

@@ -3,14 +3,14 @@ import { Layout, Menu, Icon, BackTop } from "antd";
 import { Route } from "react-router";
 import { connect } from "react-redux";
 
-import allComponents from "../index";
-import routesConfig from "../../routes/config";
+import {allComponents} from "../../../routes";
+import routesConfig from "../../../utils/routes";
 
 import HomeSiderComp from "./HomeSider";
 import HomeHeaderComp from "./HomeHeader";
-import { IMenuItem, IMenuModel } from "./../../routes/config";
+import { IMenuItem, IMenuModel } from "../../../utils/routes";
 import { IAPPState, toggleCollapsedAction } from "src/reducers/app";
-import "./home.scss";
+import "../styles/Home.scss";
 
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;

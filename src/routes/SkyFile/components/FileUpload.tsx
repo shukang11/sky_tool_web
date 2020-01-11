@@ -164,4 +164,4 @@ class FileUploadComp extends React.Component<
   }
 }
 
-export default FileUploadComp;
+export {FileUploadComp} ;

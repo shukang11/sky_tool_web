@@ -2,9 +2,9 @@ import * as React from "react";
 import { Layout, Menu, Icon, Row } from "antd";
 import { Link } from "react-router-dom";
 
-import routesConfig from "../../routes/config";
-import { IMenuItem, IMenuModel } from "./../../routes/config";
-import "./HomeSider.scss";
+import routesConfig from "../../../utils/routes";
+import { IMenuItem, IMenuModel } from "../../../utils/routes";
+import "../styles/HomeSider.scss";
 
 const { Sider } = Layout;
 const { Item, SubMenu } = Menu;

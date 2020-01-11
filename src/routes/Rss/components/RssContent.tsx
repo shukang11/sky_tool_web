@@ -3,7 +3,7 @@ import { getRssContentList, readRssContent, toggleRssContentCollect } from "src/
 import { List, Button, Spin, Card, Dropdown, Menu, Row, Col, message } from "antd";
 import { withRouter, RouteComponentProps } from "react-router-dom";
 import * as InfiniteScroll from "react-infinite-scroller";
-import "./RssContent.scss";
+import "../styles/RssContent.scss";
 
 interface IRssContentModel {
   id: number;
@@ -148,4 +148,7 @@ class RssContentComp extends React.Component<
   }
 }
 
-export default withRouter(RssContentComp);
+const RssContent = withRouter(RssContentComp);
+export {
+  RssContent
+};

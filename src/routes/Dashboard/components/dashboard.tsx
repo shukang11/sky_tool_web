@@ -2,8 +2,8 @@ import * as React from "react";
 import ReactEcharts from "echarts-for-react";
 import { connect } from "react-redux";
 import { Row, Col, Card, message } from "antd";
-import { dashboardInfo as getDashBoardInfo } from "../../services/dashboard";
-import "./dashboard.scss";
+import { dashboardInfo as getDashBoardInfo } from "../../../services/dashboard";
+import "../styles/dashboard.scss";
 
 declare interface IQuotaModel {
   rssEnableCount?: number;
@@ -35,14 +35,13 @@ class DashboardComp extends React.Component<IDashboardProps, IDashboardState> {
 
   componentDidMount() {
     getDashBoardInfo().then(r => {
-      
       if (!r || !r.data) {
         return;
       }
       var quota: IQuotaModel = {
         rssEnableCount: r.data.rss_enable_count,
         rssTodayAppendCount: r.data.today_rss_content_count,
-        rssCount: r.data.rss_count,
+        rssCount: r.data.rss_count
       };
       this.setState({
         quota: quota
@@ -197,4 +196,5 @@ const mapStateToProps = (state: { rss: any }) => {
 
 const mapDispatchToProps = (dispatch: any) => ({});
 
-export default connect(mapStateToProps, mapDispatchToProps)(DashboardComp);
+const DashBoard = connect(mapStateToProps, mapDispatchToProps)(DashboardComp);
+export { DashBoard };
